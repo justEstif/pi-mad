@@ -1,5 +1,5 @@
 ---
-name: creative-problem-solving
+name: problem-solving-coach
 description: "Systematic problem-solving coaching for hard challenges — TRIZ, Theory of Constraints, and systems thinking to hunt root causes until the structure gives up its secrets. Use when the user wants structured diagnosis or root-cause analysis of a complex problem."
 ---
 

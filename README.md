@@ -8,14 +8,24 @@ Curated, framework-free skills for [pi](https://github.com/badlogic/pi-mono) der
 pi install git:github.com/justEstif/pi-mad
 ```
 
-Update: `pi update --extensions` (or `pi update --all`). Individual skills can be disabled per-session via pi's resource settings — with ~16 skills installed you'll want to disable the ones you're not using to keep the per-session description cost down.
+Update: `pi update --extensions` (or `pi update --all`).
+
+## Toggling skills
+
+Don't need all 16 loaded? Pi ships a UI for this — no package-specific tooling:
+
+```bash
+pi config        # TUI to enable/disable this package's skills (and other resources)
+```
+
+`pi config` starts in global scope (`~/.pi/agent/settings.json`); press **Tab** to switch to project-local mode (`.pi/settings.json`) — handy for enabling the coach skills only in the projects where you run sessions. Disabled skills cost zero context.
 
 ## Skills
 
 | Skill | Origin | What it does |
 |---|---|---|
 | `lens-review` | BMAD-METHOD `bmad-review` | Multi-lens review (adversarial, edge-case, verification-gap, editorial structure/prose) with triaged JSON findings |
-| `elicitation` | BMAD-METHOD `bmad-advanced-elicitation` | Menu-driven refinement passes (socratic, pre-mortem, red team…) over recent output |
+| `pressure-test` | BMAD-METHOD `bmad-advanced-elicitation` | Menu-driven refinement passes (socratic, pre-mortem, red team…) over recent output |
 | `agent-builder` | bmad-builder | Build persistent persona agents (memory sanctum, wake behavior, capabilities) |
 | `workflow-builder` | bmad-builder | Build and evaluate multi-step agent workflows |
 | `brainstorming-coach` | BMAD web-bundle | Facilitated brainstorming protocol |
@@ -23,13 +33,13 @@ Update: `pi update --extensions` (or `pi update --all`). Individual skills can b
 | `prfaq-coach` | BMAD web-bundle | PR/FAQ narrative development |
 | `product-brief-coach` | BMAD web-bundle | Product brief coaching |
 | `ux-coach` | BMAD web-bundle | UX spine (DESIGN.md + EXPERIENCE.md) coaching + rubric |
-| `market-and-industry-research` | BMAD web-bundle | Structured market/industry research |
-| `creative-brainstorming` | bmad-cis | Coach-persona ideation sessions |
-| `creative-problem-solving` | bmad-cis | Coach-persona systematic problem-solving |
-| `creative-design-thinking` | bmad-cis | Coach-persona design-thinking sessions |
-| `creative-innovation-strategy` | bmad-cis | Coach-persona innovation strategy |
-| `creative-storytelling` | bmad-cis | Coach-persona storytelling development |
-| `creative-presentation-master` | bmad-cis | Coach-persona presentation crafting |
+| `market-research` | BMAD web-bundle | Structured market/industry research |
+| `ideation-coach` | bmad-cis | Coach-persona ideation sessions |
+| `problem-solving-coach` | bmad-cis | Coach-persona systematic problem-solving |
+| `design-thinking-coach` | bmad-cis | Coach-persona design-thinking sessions |
+| `innovation-coach` | bmad-cis | Coach-persona innovation strategy |
+| `storytelling-coach` | bmad-cis | Coach-persona storytelling development |
+| `presentation-coach` | bmad-cis | Coach-persona presentation crafting |
 
 ## Porting recipe
 

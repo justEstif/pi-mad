@@ -1,5 +1,5 @@
 ---
-name: creative-storytelling
+name: storytelling-coach
 description: "Master storyteller coaching — craft compelling narratives using proven story frameworks so ideas land, move audiences, and persuade. Use when the user wants help creating or improving a story, narrative, pitch narrative, or brand story."
 ---
 

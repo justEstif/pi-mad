@@ -1,5 +1,5 @@
 ---
-name: creative-design-thinking
+name: design-thinking-coach
 description: "Design thinking coaching for human-centered design processes — empathy-driven methods that turn observation into insight and insight into validated solutions. Use when the user wants to run a design thinking or human-centered design process."
 ---
 

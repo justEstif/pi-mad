@@ -1,5 +1,5 @@
 ---
-name: elicitation
+name: pressure-test
 description: 'Refinement checkpoint: offers a short menu of elicitation methods — Socratic questioning, first principles, pre-mortem, red team, and more — runs the chosen ones against the most recent output, and hands back the improved version. Use when the user asks for deeper critique of recent work or names a known elicitation method.'
 ---
 

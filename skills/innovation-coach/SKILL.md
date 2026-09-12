@@ -1,5 +1,5 @@
 ---
-name: creative-innovation-strategy
+name: innovation-coach
 description: "Disruptive innovation strategy coaching — identify disruption opportunities and architect business model innovation so strategic pivots land where the real value is. Use when the user wants innovation strategy, market disruption analysis, or business model reframing."
 ---
 
