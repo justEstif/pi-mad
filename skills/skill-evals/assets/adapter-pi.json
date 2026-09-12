@@ -1,0 +1,19 @@
+{
+  "name": "pi",
+  "invocation": [
+    "python3",
+    "-c",
+    "import json, subprocess, sys\nprompt = sys.argv[1]\nargv = ['pi', '--provider', 'zai', '--model', 'glm-5.2', '--mode', 'json',\n        '--no-session', '--no-extensions', '--no-context-files', '--offline',\n        '-a', '-p', '--', prompt]\nproc = subprocess.run(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE)\nti = to = 0\nfor line in proc.stdout.decode('utf-8', 'replace').splitlines():\n    line = line.strip()\n    if not line:\n        continue\n    try:\n        evt = json.loads(line)\n    except ValueError:\n        continue\n    if not isinstance(evt, dict) or evt.get('type') != 'message_end':\n        continue\n    msg = evt.get('message')\n    if not isinstance(msg, dict) or msg.get('role') != 'assistant':\n        continue\n    usage = msg.get('usage') or {}\n    ti += int(usage.get('input') or 0)\n    to += int(usage.get('output') or 0)\n    blocks = []\n    for b in msg.get('content') or []:\n        if not isinstance(b, dict):\n            continue\n        if b.get('type') == 'toolCall':\n            inp = dict(b.get('arguments') or {})\n            if 'path' in inp and 'file_path' not in inp:\n                inp['file_path'] = inp['path']\n            blocks.append({'type': 'tool_use', 'name': b.get('name'), 'input': inp})\n        elif b.get('type') == 'text':\n            blocks.append({'type': 'text', 'text': b.get('text') or ''})\n    print(json.dumps({'type': 'assistant',\n                      'message': {'role': 'assistant', 'content': blocks,\n                                  'usage': {'input_tokens': ti, 'output_tokens': to}}}))\nprint(json.dumps({'type': 'result', 'usage': {'input_tokens': ti, 'output_tokens': to}}))\nif proc.stderr:\n    sys.stderr.write(proc.stderr.decode('utf-8', 'replace')[-2000:])\nsys.exit(proc.returncode)",
+    "{prompt}"
+  ],
+  "auth_env": "ZAI_API_KEY",
+  "transcript": {
+    "format": "stdout-jsonl"
+  },
+  "skill_dir": ".pi/skills",
+  "load_signal": {
+    "skill_tool": null,
+    "read_tool": "read"
+  },
+  "env_passthrough": []
+}
