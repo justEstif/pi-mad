@@ -1,12 +1,19 @@
 {
   "name": "pi-mad",
   "version": "0.1.0",
-  "description": "Curated BMAD-derived skills for pi — framework machinery stripped, content kept",
+  "description": "Curated BMAD-derived skills for pi \u2014 framework machinery stripped, content kept",
   "license": "MIT",
   "author": "justEstif",
   "repository": "github:justEstif/pi-mad",
-  "keywords": ["pi-package"],
+  "keywords": [
+    "pi-package"
+  ],
   "pi": {
-    "skills": ["./skills"]
+    "skills": [
+      "./skills"
+    ],
+    "extensions": [
+      "./extensions"
+    ]
   }
 }

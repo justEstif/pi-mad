@@ -12,13 +12,19 @@ Update: `pi update --extensions` (or `pi update --all`).
 
 ## Toggling skills
 
-Don't need all 16 loaded? Pi ships a UI for this — no package-specific tooling:
+This package bundles its own toggle UI — an extension, no extra install step:
 
-```bash
-pi config        # TUI to enable/disable this package's skills (and other resources)
+```text
+/pi-mad                  # interactive browser: enter toggles, saved immediately
+/pi-mad list             # show enabled/disabled state
+/pi-mad off <skill...>   # e.g. /pi-mad off prd-coach prfaq-coach
+/pi-mad on <skill...>    # re-enable
+/pi-mad reset            # enable everything
 ```
 
-`pi config` starts in global scope (`~/.pi/agent/settings.json`); press **Tab** to switch to project-local mode (`.pi/settings.json`) — handy for enabling the coach skills only in the projects where you run sessions. Disabled skills cost zero context.
+State is written as exclusion filters in the package's settings entry (`{ skills: ["!prd-coach"] }`), so it composes with `pi update` and hand edits. Toggles apply on next pi start.
+
+Pi's native `pi config` TUI does the same across all packages (Tab switches global/project scope) if you prefer it.
 
 ## Skills
 
