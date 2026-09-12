@@ -1,6 +1,6 @@
 # pi-mad
 
-Curated, framework-free skills for [pi](https://github.com/badlogic/pi-mono) derived from the BMAD Method ecosystem. The domain content (review lenses, elicitation methods, coaching protocols, agent/workflow builders, planning and build chains) is kept; the BMAD framework machinery (`uv run` resolvers, `customize.toml` merge layers, `_bmad/` scaffolding, module manifests) is stripped and replaced with plain defaults in each skill's `config.toml`.
+Curated, framework-free skills for [pi](https://github.com/badlogic/pi-mono) — the largest share derived from the BMAD Method ecosystem, plus delivery patterns from Anthropic's AI-native SDLC playbook and Vercel's product-design practice. Domain content is kept; framework machinery (`uv run` resolvers, `customize.toml` merge layers, `_bmad/` scaffolding, module manifests) is stripped and replaced with plain defaults in each skill's `config.toml`.
 
 ## Install
 
@@ -26,7 +26,13 @@ State is written as exclusion filters in the package's settings entry (`{ skills
 
 Pi's native `pi config` TUI does the same across all packages (Tab switches global/project scope) if you prefer it.
 
-## Skills (27)
+## Skills (29)
+
+### Delivery loop & design standards
+| Skill | Origin | What it does |
+|---|---|---|
+| `sdlc-loop` | Anthropic AI-native SDLC playbook | Conductor for the idea→production artifact loop: each stage commits what the next reads (intent.md → SPEC.md → plan → diff → review findings → retro), dispatching to the pi-mad skills below, humans at the gates |
+| `product-design-init` | Vercel product-design practice | One-shot generator that scaffolds a repo-local product-design skill: 5-mode request router (shape/implement/review/copy/harden), standards references, exemplars, coverage-gaps |
 
 ### Planning chain
 | Skill | Origin | What it does |
