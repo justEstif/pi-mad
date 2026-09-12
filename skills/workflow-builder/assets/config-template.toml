@@ -1,0 +1,50 @@
+# Edit values directly; they are plain defaults.
+#
+# Config surface for {skill-name}.
+
+[workflow]
+
+# Steps to run before the standard activation (config load, greet).
+# Use for pre-flight loads, compliance checks, etc.
+
+activation_steps_prepend = []
+
+# Steps to run after the greeting but before Stage 1 of the workflow.
+# Use for context-heavy setup that should happen
+# once the user has been acknowledged.
+
+activation_steps_append = []
+
+# Persistent facts the workflow keeps in mind for the whole run
+# (standards, compliance constraints, stylistic guardrails).
+# Distinct from the runtime memory sidecar -- these are static context
+# loaded on activation.
+#
+# Each entry is either:
+#   - a literal sentence, e.g. "All briefs must include a regulatory-risk section."
+#   - a file reference prefixed with `file:`, e.g. "file:docs/standards.md"
+#     (paths resolve from the project working directory; glob patterns are
+#     supported; the file's contents are loaded and treated as facts).
+
+persistent_facts = []
+
+# Executed when the workflow reaches its terminal stage, after
+# the main output has been delivered. A string scalar is one instruction,
+# an array is a sequence run in order. Leave empty for
+# no custom post-completion behavior.
+
+on_complete = ""
+
+# --- Workflow-specific configurables (lifted during Configurability Discovery) ---
+#
+# Templates, output paths, and hooks the builder surfaced with the author.
+# Paths inside the skill are bare from the skill root; paths outside point
+# into the project working directory.
+#
+# Naming conventions:
+#   *_template        -- file paths for templates the workflow loads
+#   *_output_path     -- writable destinations
+#   on_<event>        -- additional hook scalars beyond on_complete
+#
+# Example (from a product-brief skill):
+#   brief_template = "resources/brief-template.md"

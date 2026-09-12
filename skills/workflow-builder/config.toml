@@ -1,0 +1,12 @@
+# Edit values directly; they are plain defaults.
+
+[workflow]
+
+activation_steps_prepend = []
+activation_steps_append = []
+persistent_facts = []
+on_complete = ""
+build_standards = []
+evals_required = ""
+skill_md_token_desired = 2000
+skill_md_token_budget = 3000

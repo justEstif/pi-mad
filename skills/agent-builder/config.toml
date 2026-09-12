@@ -1,0 +1,10 @@
+# Edit values directly; they are plain defaults.
+
+[agent]
+
+activation_steps_prepend = []
+activation_steps_append = []
+persistent_facts = []
+on_complete = ""
+build_standards = []
+evals_required = ""

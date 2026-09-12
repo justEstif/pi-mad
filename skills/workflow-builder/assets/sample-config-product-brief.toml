@@ -1,0 +1,52 @@
+# SAMPLE -- reference copy of a product-brief skill's config.toml.
+
+[workflow]
+
+# Steps to run before the standard activation (config load, greet).
+# Use for pre-flight loads, compliance checks, etc.
+activation_steps_prepend = []
+
+# Steps to run after greet but before the workflow begins.
+# Use for context-heavy setup that should happen once the user has been acknowledged.
+activation_steps_append = []
+
+# Persistent facts the workflow keeps in mind for the whole run
+# (standards, compliance constraints, stylistic guardrails).
+# Each entry is either a literal sentence or a `file:`-prefixed path/glob
+# whose contents are loaded as facts.
+# Default is empty. Common opt-ins:
+#   "file:docs/project-context.md"                                            # shared project context
+#   "All briefs must include a regulatory-risk section."                      # a standing requirement
+persistent_facts = []
+
+# Executed when the workflow completes (after the user has been told the
+# brief is ready). Accepts either a string scalar (single instruction)
+# or an array of instructions executed in order. Empty for none.
+on_complete = ""
+
+# Default brief structure. Treated as a starting point — the LLM adapts it
+# to the product, purpose, and domain. Change the path to enforce a different
+# structure (e.g. regulated-industry, investor-deck).
+brief_template = "assets/brief-template.md"
+
+# Run folder location. The brief, optional addendum, and optional distillate
+# all land inside `briefs/brief-{project_name}-{date}/`.
+output_dir = "briefs"
+output_folder_name = "brief-{project_name}-{date}"
+
+# Document standards applied to human-consumed docs at finalize. Each entry is
+# a plain-text directive or a `file:` path to a standards document; the LLM applies the
+# findings before the user sees the draft. Encodes standards, not options.
+#
+# Examples:
+#   "Convert all dates to ISO 8601 format."
+#   "file:style-guides/company-voice.md"
+#
+# Suggested order (broader passes first, narrower last):
+#   1. Structural (cuts, reorganization, section sizing)
+#   2. Content/voice/conventions (org standards, tone, terminology, compliance)
+#   3. Prose mechanics (grammar, clarity, typos)
+doc_standards = [
+  "Check structure before prose: cuts and reorganization come first.",
+  "Apply the org voice guide at style-guides/company-voice.md.",
+]
