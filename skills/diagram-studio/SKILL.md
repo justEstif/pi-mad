@@ -41,16 +41,16 @@ The spec JSON schema and layout options are documented in `references/excalidraw
 
 Resolve from the request, not the user's expertise:
 
-1. **Guided (default)** — the user has a rough idea, not a spec. Load `references/guided-design.md` and facilitate: what is being communicated, to whom, which type fits, what the key nodes and flows are. Then generate.
-2. **Autonomous** — the user supplies a complete description or spec. Load `references/diagram-generation.md` and generate directly; report the result and offer one adjustment pass.
+1. **Guided (default)** — the user has a rough idea, not a spec. **MANDATORY — READ `references/guided-design.md`** first, then facilitate: what is being communicated, to whom, which type fits, what the key nodes and flows are. Then generate.
+2. **Autonomous** — the user supplies a complete description or spec. **MANDATORY — READ `references/diagram-generation.md`** before generating; report the result and offer one adjustment pass.
 3. **Quick** — "just make it". Infer everything with sensible defaults, generate, offer one adjustment pass.
 
-Which diagram type fits which need: `references/diagram-types.md` (flowchart, architecture, sequence, mind map, state, ER, and when each is wrong). Generation mechanics and layout rules: `references/diagram-generation.md`. Element-level schema details: `references/excalidraw-schema.md`.
+**MANDATORY — READ `references/diagram-types.md`** — which type fits which need: (flowchart, architecture, sequence, mind map, state, ER, and when each is wrong). Generation mechanics and layout rules: `references/diagram-generation.md`. Element-level schema details: `references/excalidraw-schema.md`.
 
 ## Workflow
 
 1. Resolve mode and execution path.
-2. Select diagram type (load `references/diagram-types.md` if the fit isn't obvious).
+2. **MANDATORY — READ `references/diagram-types.md`** if the fit isn't obvious.
 3. Draft the structure as a node/edge list — content before coordinates.
 4. Execute via the resolved path. On the MCP path, load the diagram guide first; on the file path, run the validator before presenting.
 5. Present: saved file path or canvas state. Offer iteration — add, reroute, restyle, or restructure.
