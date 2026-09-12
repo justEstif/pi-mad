@@ -1,6 +1,8 @@
 ---
 name: deep-recon
 description: "Frame decision-grade research and run it three ways: draft a prompt for the user's own deep-research tool, process a finished report into a cited digest other skills can use directly, or run the research here with parallel web searches. Six research types — market, domain, technical, competitive, user-voice, academic-lit — plus a select shape for choosing between candidates. Use when the user wants research drafted, run, or processed in service of a decision."
+metadata:
+  tags: "workflow research"
 ---
 
 # Deep Recon

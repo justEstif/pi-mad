@@ -1,6 +1,8 @@
 ---
 name: idea-forge
 description: "Pressure-test a half-formed idea in a questioning conversation with rotating skeptic personas until you can act on it or drop it with confidence. Optionally writes a short forged-idea.md brief for planning skills to build on. Use when the user wants to forge an idea, stress-test or harden an idea, or pressure-test their thinking before committing to it."
+metadata:
+  tags: "workflow planning"
 ---
 
 # Idea Forge

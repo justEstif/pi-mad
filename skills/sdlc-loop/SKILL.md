@@ -1,6 +1,8 @@
 ---
 name: sdlc-loop
 description: "Conduct an idea-to-production delivery loop: six stages (Plan, Design, Build, Test, Deploy, Maintain) run as a loop where each stage commits one artifact the next stage reads — intent.md, SPEC.md, plan.md, diff + tests, review findings, merged PR — and a human accepts each gate. Use when starting work from an idea, ticket, or incident, or when the user wants the whole delivery chain orchestrated. This skill conducts and enforces handoffs; it dispatches stage work to other skills."
+metadata:
+  tags: "workflow planning"
 ---
 
 # SDLC Loop

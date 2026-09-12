@@ -26,7 +26,9 @@ State is written as exclusion filters in the package's settings entry (`{ skills
 
 Pi's native `pi config` TUI does the same across all packages (Tab switches global/project scope) if you prefer it.
 
-## Skills (29)
+## Skills (30)
+
+Every skill carries `metadata.tags` in its frontmatter — first tag is the **kind** (`agent` = facilitated persona session, `workflow` = procedural play, `tool` = utility/generator), second is the **domain** (`planning`, `build`, `review`, `research`, `creative`, `meta`). Filter with `/pi-mad list --tag coach`-style tag args (see Toggling below).
 
 ### Delivery loop & design standards
 | Skill | Origin | What it does |
@@ -65,6 +67,7 @@ Pi's native `pi config` TUI does the same across all packages (Tab switches glob
 | `workflow-builder` | bmad-builder | Build and evaluate multi-step agent workflows |
 | `skill-evals` | bmad-builder `bmad-eval-runner` | Evaluate a skill four ways (baseline, variant, quality, trigger) and optimize its description — includes a pi adapter |
 | `repo-context` | BMAD-METHOD `bmad-project-context` | Author, refresh, and audit a repo's AGENTS.md; record observed agent mistakes as pitfalls |
+| `diagram-studio` | bmad-builder excalidraw sample | Diagrams as Excalidraw: MCP canvas (mermaid import, arrow binding, export/share) or standalone files |
 
 ### Coaches (facilitated sessions)
 | Skill | Origin | What it does |

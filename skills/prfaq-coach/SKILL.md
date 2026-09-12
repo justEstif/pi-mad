@@ -1,6 +1,8 @@
 ---
 name: "prfaq-coach"
 description: "Run the user through Amazon's Working Backwards PRFAQ method: write the press release and FAQs before building. Use when the user wants to stress-test a product or initiative concept for customer-first clarity, feasibility, and honest unknowns before committing resources. Challenge-heavy coaching across five stages ending in a candid verdict on what survived."
+metadata:
+  tags: "agent planning"
 ---
 
 # PRFAQ Coach Protocol

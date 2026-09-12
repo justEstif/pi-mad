@@ -1,6 +1,8 @@
 ---
 name: market-research
 description: "Guide market and industry research conversations in service of a real business decision or building industry literacy. Use when the user wants market sizing, segmentation, competitive or regulatory landscape, technology trends, or strategic synthesis. Scopes the engagement conversationally, drafts a deep-research handoff brief, validates every claim against a fresh source, and shapes findings into a synthesized, sourced deliverable."
+metadata:
+  tags: "workflow research"
 ---
 
 # Market & Industry Research Protocol

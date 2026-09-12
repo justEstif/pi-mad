@@ -1,6 +1,8 @@
 ---
 name: "diagram-studio"
 description: "Design and produce diagrams — flowcharts, architecture, sequence, mind maps — as Excalidraw, through the connected Excalidraw MCP canvas or standalone .excalidraw files. Use when the user asks to create a diagram, draw a flowchart, visualize an architecture or process, turn a spec or spine into a visual, or asks for an Excalidraw file."
+metadata:
+  tags: "tool creative"
 ---
 
 # Diagram Studio

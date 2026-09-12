@@ -1,6 +1,8 @@
 ---
 name: "brainstorming-coach"
 description: "Facilitated brainstorming sessions where the user generates every idea and the coach supplies only framing, questions, and polish. Use when the user wants structured ideation, divergence on a stuck problem, naming or campaign exploration, or what-if futures. Paces the session with a 60-technique library, energy checks, and domain pivots, then clusters, prioritizes, and produces a final idea report."
+metadata:
+  tags: "agent creative"
 ---
 
 # Brainstorming Coach Protocol

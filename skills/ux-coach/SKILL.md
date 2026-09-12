@@ -1,6 +1,8 @@
 ---
 name: "ux-coach"
 description: "Coach a user through producing a UX spec as a DESIGN.md and EXPERIENCE.md pair, eliciting their vision rather than imposing design opinions. Use when the user wants to define visual identity, information architecture, journeys, and interaction specs for a product, or to update or validate an existing spine pair. Includes named-protagonist journeys, surface closure checks, and a design-tool handoff prompt."
+metadata:
+  tags: "agent creative"
 ---
 
 # UX Coach Protocol

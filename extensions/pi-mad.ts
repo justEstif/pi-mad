@@ -80,6 +80,32 @@ function listSkills(): string[] {
 		.sort();
 }
 
+const tagCache = new Map<string, string[]>();
+function tagsFor(skill: string): string[] {
+	if (tagCache.has(skill)) return tagCache.get(skill)!;
+	let tags: string[] = [];
+	try {
+		const { fm } = extractFrontmatter(path.join(SKILLS_DIR, skill, "SKILL.md"));
+		const raw = (fm.metadata as any)?.tags;
+		if (typeof raw === "string") tags = raw.split(/[\s,]+/).filter(Boolean);
+	} catch {
+		/* unparseable frontmatter: no tags */
+	}
+	tagCache.set(skill, tags);
+	return tags;
+}
+
+function skillsWithTag(tag: string): string[] {
+	return listSkills().filter((s) => tagsFor(s).includes(tag));
+}
+
+function extractFrontmatter(file: string): { fm: any } {
+	const text = fs.readFileSync(file, "utf8");
+	const parts = text.split(/^---\n/m);
+	if (parts.length < 3) throw new Error("no frontmatter");
+	return { fm: Bun.YAML.parse(parts[1]) };
+}
+
 function globToRegex(pattern: string): RegExp {
 	const escaped = pattern
 		.replace(/[.+^${}()|[\]\\]/g, "\\$&")
@@ -156,24 +182,44 @@ export default function piMadExtension(pi: ExtensionAPI) {
 		getArgumentCompletions: (prefix) => {
 			const words = prefix.split(/\s+/).filter(Boolean);
 			const verb = words[0] ?? "";
+			if (prefix.includes("--tag")) {
+				const partial = prefix.split(/--tag\s*/)[1] ?? "";
+				return [...new Set(listSkills().flatMap(tagsFor))]
+					.filter((t) => t.startsWith(partial))
+					.map((t) => ({ value: t, label: `${t} (${skillsWithTag(t).length})` }));
+			}
 			if (verb === "on" || verb === "off") {
 				const partial = words[1] ?? "";
-				return allSkills.filter((s) => s.startsWith(partial)).map((s) => ({ value: s, label: s }));
+				return listSkills().filter((s) => s.startsWith(partial)).map((s) => ({ value: s, label: s }));
 			}
-			if (words.length <= 1 && ["list", "reset", "on", "off"].some((v) => v.startsWith(verb))) {
-				return ["list", "on", "off", "reset"].map((v) => ({ value: v, label: v }));
+			if (words.length <= 1 && ["list", "reset", "on", "off", "tags"].some((v) => v.startsWith(verb))) {
+				return ["list", "on", "off", "reset", "tags"].map((v) => ({ value: v, label: v }));
 			}
 			return null;
 		},
 		handler: async (args, ctx) => {
-			const [verb, ...names] = args.trim().split(/\s+/).filter(Boolean);
+			// --tag <tag> scopes on/off/list to a tag family
+			const tagMatch = args.match(/--tag\s+(\S+)/);
+			const tagFilter = tagMatch?.[1];
+			const positional = args.replace(/--tag\s+\S+/g, "").trim();
+			const [verb, ...names] = positional.split(/\s+/).filter(Boolean);
+			const allSkills = listSkills();
+			const allTags = [...new Set(allSkills.flatMap(tagsFor))].sort();
 
-			if (verb === "on" || verb === "off" || verb === "reset") {
-				if (verb !== "reset" && names.length === 0) {
-					ctx.ui.notify(`Usage: /pi-mad ${verb} <skill...>`, "error");
+			if (verb === "tags") {
+				const counts = allTags.map((t) => `${t} (${skillsWithTag(t).length})`).join("  ");
+				ctx.ui.notify(`pi-mad tags: ${counts}`, "info");
+				return;
+			}
+
+			if (verb === "on" || verb === "off") {
+				let targets = tagFilter ? skillsWithTag(tagFilter) : [];
+				if (names.length) targets = [...new Set([...targets, ...names])];
+				if (targets.length === 0) {
+					ctx.ui.notify(`Usage: /pi-mad ${verb} <skill...> [--tag <tag>]  ·  tags: ${allTags.join(", ")}`, "error");
 					return;
 				}
-				applyVerb(ctx, verb, names);
+				applyVerb(ctx, verb, targets);
 				return;
 			}
 
@@ -183,10 +229,14 @@ export default function piMadExtension(pi: ExtensionAPI) {
 					ctx.ui.notify("pi-mad package entry not found in settings", "error");
 					return;
 				}
-				const lines = allSkills.map(
-					(s) => `${isEnabled(loc.entry, s) ? "✓" : "✗"} ${s}`,
-				);
+				const shown = tagFilter ? skillsWithTag(tagFilter) : allSkills;
+				const lines = shown.map((s) => `${isEnabled(loc.entry, s) ? "✓" : "✗"} ${s}  [${tagsFor(s).join(", ") || "—"}]`);
 				ctx.ui.notify(`${loc.scope}: ${loc.file}\n${lines.join("\n")}`, "info");
+				return;
+			}
+
+			if (verb === "reset") {
+				applyVerb(ctx, "reset", []);
 				return;
 			}
 
@@ -196,14 +246,15 @@ export default function piMadExtension(pi: ExtensionAPI) {
 				ctx.ui.notify("pi-mad package entry not found in global or project settings", "error");
 				return;
 			}
+			const browserSkills = tagFilter ? skillsWithTag(tagFilter) : allSkills;
 			const enabled = new Set(allSkills.filter((s) => isEnabled(loc.entry, s)));
 			let dirty = false;
 
 			const items = (): SelectItem[] =>
-				allSkills.map((s) => ({
+				browserSkills.map((s) => ({
 					value: s,
 					label: `${enabled.has(s) ? "✓" : "✗"} ${s}`,
-					description: enabled.has(s) ? "enabled" : "disabled",
+					description: `${tagsFor(s).join(", ") || "—"} · ${enabled.has(s) ? "enabled" : "disabled"}`,
 				}));
 
 			await ctx.ui.custom<void>((tui, theme, _kb, done) => {

@@ -1,6 +1,8 @@
 ---
 name: innovation-coach
 description: "Disruptive innovation strategy coaching and full facilitated strategy runs. Works end-to-end — market landscape and competitive analysis, business-model deconstruction, disruption-opportunity hunt, option generation and evaluation, bold recommendation, phased roadmap, metrics, and risk mitigation — powered by a 25-framework strategy library. Use for on-demand coaching on any part of the strategy, or when the user wants an end-to-end facilitated innovation strategy session."
+metadata:
+  tags: "agent planning"
 ---
 
 # Victor — Disruptive Innovation Oracle

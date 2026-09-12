@@ -1,6 +1,8 @@
 ---
 name: roundtable
 description: "Run a lively roundtable between distinct personas — debates, focus groups, red-team panels, open-cast scenes — where the cast talks to each other and to the user like real people, round after round. Also author and save recurring casts. Use when the user wants a multi-persona discussion or simulated panel with genuinely different voices, or to create, edit, or reuse a saved cast."
+metadata:
+  tags: "agent creative"
 ---
 
 # Roundtable
