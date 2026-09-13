@@ -1,18 +1,48 @@
 ---
 name: skill-evals
-description: "Evaluate a skill four ways — baseline versus bare model, section-stripping variant comparison, rubric quality grading, and trigger firing — then optimize its description or drive bounded self-improvement from the results. Use when the user wants to evaluate a skill, run evals, benchmark a skill, validate triggers, optimize a description, or grade skill outputs."
+description: "Author, audit, and evaluate agent skills. Authoring half: agentskills.io spec validation, quality-rubric grading, description-drift detection, and numbered improvements applied with approval. Eval half: baseline versus bare model, section-stripping variant comparison, and trigger firing, with bounded self-improvement from results. Use when the user wants to create, audit, fix, or grade a skill ('skillify this', 'audit all skills', 'grade report'), or run evals, benchmark a skill, validate triggers, or optimize a description.",
 disable-model-invocation: true
 ---
 
 # Skill Eval Runner
 
-You run a skill's evals and report what they say. The user wants signal, not theatre, so cite specific findings, surface evals that pass for trivial reasons, and never widen a tolerance to make a run look like it succeeded.
+Two halves of one skill lifecycle: **authoring** (create, audit, grade, fix — deterministic) and **evaluation** (the four modes below — empirical). Author first, then measure.
+
+## Authoring and auditing
+
+Use these when the user asks to create a skill, audit existing ones, check spec conformance, detect description drift, or grade quality.
+
+**Spec validation (run first, always, before any quality judgment):**
+
+```bash
+bun tools/validate_skills.ts skills/   # from the shelf root; pass a skill dir for one skill
+```
+
+Deterministic agentskills.io conformance gate: frontmatter, name rules, description length, missing references, auxiliary files, NEVER format, MANDATORY READ triggers. Fix all errors before qualitative work — quality scoring is meaningless while format compliance fails.
+
+**Quality evaluation.** **MANDATORY — READ `references/authoring-rubric.md`** before grading; **MANDATORY — READ `references/failure-patterns.md`** for common issues. **MANDATORY — READ `references/authoring-patterns.md`** before selecting a structure when creating or restructuring.
+
+Core constraint: **knowledge delta = expert knowledge − what the agent already knows.** Mark every section [E]xpert / [A]ctivation / [R]edundant; target >70% Expert; delete [R]. "Would the agent do this without being told?" governs description quality, progressive disclosure, NEVER rules, and freedom calibration alike.
+
+Non-obvious authoring rules:
+
+- **Read body before description.** Form an independent summary from the body first, then compare to the description — starting from the description anchors you to its framing and hides drift.
+- **Description > body.** Agents see only descriptions when selecting; a perfect body with a vague description is an invisible skill. All triggering info goes in the description; "When to use" body sections are dead weight.
+- **Short, precise descriptions.** WHAT (one clause) + WHEN (the specific task, not the domain). DO-NOT-trigger clause only when a genuinely confusable sibling exists. No keyword lists.
+- **Every NEVER needs WHY + INSTEAD.** No vague warnings — specific pattern + what goes wrong + what to do instead.
+- **Guardrails over workflows.** Prescribe constraints, not steps; reserve exact sequences for fragile operations (exact commands, order-dependent steps).
+- **Define done.** Workflow skills must state what to verify and report, not stop at a first review checkpoint.
+- **Extend existing skills before creating new ones** — duplicate skills split activation signals.
+
+**Output formats.** Drift report: `Description claims` / `Body actually does` (from body only) / `Drift` / verdict (Aligned / Minor / Significant). Batch report: sorted grade ascending, split Needs Work (<B) vs Passing (≥B), top 5 improvements each. Applying improvements: one at a time with diff and approval; cap at 3 revisions per item before surfacing to a human.
+
+## The four eval modes
 
 The runner is platform-agnostic. Everything runtime-specific (how a skill is invoked, where its auth comes from, what its transcript looks like) lives behind the adapter seam described in `references/platform-adapter.md`. No model name is hardcoded anywhere in this skill.
 
 ## The four modes
 
-Each mode answers a different question about a skill. Pick the one that matches what the user is asking, or run several.
+The four eval modes answer empirical questions — no amount of rubric grading substitutes for measuring the skill against a bare model. Pick the mode that matches what the user is asking, or run several.
 
 | Mode | Question it answers | Script / reference |
 |---|---|---|

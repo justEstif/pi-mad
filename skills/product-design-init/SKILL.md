@@ -1,12 +1,12 @@
 ---
 name: product-design-init
-description: "Scaffolds a repo-local product-design skill with a 5-mode request router (Shape, Implement, Review, Copy, Harden), an operating contract, routed references, shipped-PR exemplars, and eval placeholders into the current repository. Use when setting up design standards for a repo so agents learn why patterns exist, not just what shipped. Interviews the user first, then writes .agents/skills/product-design/ files; ships structure only and never invents standards content."
+description: "Scaffolds a repo-local product-design skill with a 5-mode request router (Shape, Implement, Review, Copy, Harden), an operating contract, routed references, shipped-PR exemplars, and eval placeholders into the current repository. Use when setting up design standards for a repo so agents learn why patterns exist, not just what shipped. Interviews the user first, then writes .agents/skills/product-design/ files; ships structure only and never invents standards content; also writes the deterministic content-standards track (DESIGN.md judgment, brand.css token vocabulary, named anti-patterns) and supersedes the standalone init-design-system skill."
 disable-model-invocation: true
 ---
 
 # Product Design Init
 
-One-shot generator that scaffolds a **repo-local `product-design` skill** into the user's repository, following the structure Vercel published for its product-design skill: a 5-mode request router, an operating contract, routed references, exemplars from shipped PRs, and a coverage-gaps list. It ships **structure, not standards** — every reference file is an empty scaffold with guidance comments. Only the user's team can record their product judgment.
+One-shot generator that scaffolds a **repo-local `product-design` skill** into the user's repository, following the structure Vercel published for its product-design skill: a 5-mode request router, an operating contract, routed references, exemplars from shipped PRs, and a coverage-gaps list. It ships **structure, not standards** — every reference file is an empty scaffold with guidance comments. Only the user's team can record their product judgment. It also writes the deterministic content-standards track below (DESIGN.md judgment + brand.css vocabulary + named anti-patterns) and **supersedes the standalone `init-design-system` skill** — nothing else needs to bootstrap a repo design system.
 
 Run once per repository. Afterwards, design work in that repo is governed by the generated skill, not this one.
 
@@ -34,8 +34,22 @@ Copy assets from this skill's directory into the target repo, substituting `{{PR
 | `assets/references/` (8 files) | `.agents/skills/product-design/references/` |
 | `assets/exemplars/pr-template.md` | `.agents/skills/product-design/exemplars/pr-template.md` |
 | `assets/tooling-evals/FIXTURES-README.md` | `tooling/evals/FIXTURES-README.md` |
+| `assets/brand.css` (template) | `.agents/skills/product-design/references/brand.css` (placeholders replaced, per §2b) |
 
 Do not create anything else. Do not copy Vercel's standards content, design-system rules, or any invented guidance into the scaffolds.
+
+## 2b. Content-standards track (DESIGN.md + brand.css + anti-patterns)
+
+Alongside the router scaffold, generate the design-system layer the agents can actually obey mechanically. Pi (and any agent) has no taste by default — taste lives in the project, encoded as three parts: prose judgment, a stylesheet with a documented class/token vocabulary, and named anti-patterns. This track was absorbed from the former `init-design-system` skill.
+
+1. **Confirm there is nothing to adopt first.** Existing `.pi/skills/` or `.agents/skills/` design skills, `DESIGN.md`/`design.md` at the root, a theme config (Tailwind config, global CSS custom properties), or a component library (`src/components/ui/`, shadcn). If found → stop; use it as the only source of truth and never override with global defaults.
+2. **Gather brand inputs**: existing site, logo, marketing assets, or reference screenshots (desktop AND mobile, plus hover/empty/loading states). If none exist, confirm direction with the user before inventing anything — never invent placeholder brand values.
+3. **Write `DESIGN.md` at the repo root** (or fill the scaffold's judgment reference) with the project's design judgment: scope, reader and task, and **observable** rules — "evidence tables use the full available width", not "make the table less cramped". A rule that can't be checked can't be followed reliably. Include the reader's-job rule: same tokens, different page structure per artifact — a planning page puts controls first, a proposal leads with the recommendation. One design system ≠ one template.
+4. **Write `.agents/skills/product-design/references/brand.css`**: copy this skill's `assets/brand.css` template and REPLACE every placeholder with the project's real brand values from step 2. Document the class/token vocabulary in the scaffold so the agent composes named classes and never needs to read the CSS.
+5. **Name the anti-patterns** in the scaffold's rules reference. Named generated-design failures are recognized and avoided far more reliably than vibes. Include at minimum: generic-SaaS-dashboard drift, centered-everything, decorative gradients substituting for hierarchy, truncated/width-starved tables, equal-weight card grids that bury the primary action, emoji-as-icon.
+6. **Route corrections to the narrowest enforcing place**: judgment → scaffold prose; repeatable mechanics → named class in `brand.css`; mechanical failure (width-starved tables, missing focus states) → deterministic check via browser screenshots, not prose. Never hand-tune a generated page.
+
+Pitfalls: never ship `assets/brand.css` placeholder values as a real brand — it is a template to replace. Real reference images beat adjectives — "clean and modern" is not a spec. Check state coverage (hover, focus-visible, disabled, empty, error), not just the happy path.
 
 ## 3. Wire the trigger (propose; do not silently edit)
 
