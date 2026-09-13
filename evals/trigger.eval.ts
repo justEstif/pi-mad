@@ -12,7 +12,7 @@
  *
  * Costs one model call per case. See evals/README.md before running.
  */
-import { describeEval, it } from "vitest-evals";
+import { describeEval } from "vitest-evals";
 import { judge } from "./lib/harness.js";
 import { loadCatalog } from "./lib/catalog.js";
 import { buildLoopTriggers } from "./cases/build-loop.js";
@@ -34,16 +34,20 @@ const cases = [
 
 const catalog = loadCatalog([...new Set(cases.map((c) => c.skillId))]);
 
-describeEval("shelf-skill-triggers", () => {
-  for (const c of cases) {
-    it(`${c.shouldFire ? "fires" : "stays quiet"} on: "${c.prompt.slice(0, 60)}…" (${c.why})`, async ({ expect }) => {
-      const picked = await judge(c.prompt, catalog);
-      if (c.shouldFire) {
-        expect(picked, `expected [${c.skillId}], judge picked ${picked ?? "NONE"}`).toBe(c.skillId);
-      } else {
-        const wrongPick = picked === c.skillId;
-        expect(wrongPick, `expected the judge NOT to pick [${c.skillId}], but it did`).toBe(false);
-      }
-    });
-  }
-});
+describeEval(
+	"shelf-skill-triggers",
+	{},
+	(it) => {
+		for (const c of cases) {
+			it(`${c.shouldFire ? "fires" : "stays quiet"} on: "${c.prompt.slice(0, 60)}…" (${c.why})`, async ({ expect }) => {
+				const picked = await judge(c.prompt, catalog);
+				if (c.shouldFire) {
+					expect(picked, `expected [${c.skillId}], judge picked ${picked ?? "NONE"}`).toBe(c.skillId);
+				} else {
+					const wrongPick = picked === c.skillId;
+					expect(wrongPick, `expected the judge NOT to pick [${c.skillId}], but it did`).toBe(false);
+				}
+			});
+		}
+	},
+);

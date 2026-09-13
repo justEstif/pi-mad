@@ -15,5 +15,9 @@
     "extensions": [
       "./extensions"
     ]
+  },
+  "devDependencies": {
+    "vitest": "^4.1.11",
+    "vitest-evals": "^0.17.0"
   }
 }

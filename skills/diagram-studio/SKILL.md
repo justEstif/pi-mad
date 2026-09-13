@@ -1,6 +1,6 @@
 ---
 name: "diagram-studio"
-description: "Design and produce diagrams — flowcharts, architecture, sequence, mind maps — as Excalidraw through the connected MCP canvas or standalone .excalidraw files — plus an explain mode for lightweight visual explanation. Use when the user asks to create a diagram, draw a flowchart, visualize an architecture or process, turn a spec or spine into a visual, or asks for an Excalidraw file, or wants the current topic shown visually. Explain mode answers understanding questions inline with concise code-shape sketches (pseudocode, call and component trees, Mermaid, diffs) or focused HTML artifacts when the point needs more than a sketch."
+description: "Design and produce diagrams — flowcharts, architecture, sequence, mind maps — as Excalidraw through the connected MCP canvas or standalone .excalidraw files — plus an explain mode for lightweight visual explanation. Use only when the user wants something VISUAL — a diagram, sketch, or interactive artifact; a plain prose explanation is not this skill. Use when the user asks to create a diagram, draw a flowchart, visualize an architecture or process, turn a spec or spine into a visual, or asks for an Excalidraw file, or wants the current topic shown visually. Explain mode answers understanding questions inline with concise code-shape sketches (pseudocode, call and component trees, Mermaid, diffs) or focused HTML artifacts when the point needs more than a sketch."
 disable-model-invocation: true
 ---
 
