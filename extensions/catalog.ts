@@ -21,6 +21,16 @@ export interface SkillEntry {
 	dark: boolean;
 }
 
+// The shelf only changes at pi startup (pi update + the darkness enforcer in
+// shelf.ts), so a module-level snapshot is safe for the session. Without it the
+// browser re-reads and re-parses every SKILL.md on every keystroke.
+let cache: SkillEntry[] | null = null;
+
+/** Invalidate the snapshot (called by the startup enforcer after rewrites). */
+export function invalidate(): void {
+	cache = null;
+}
+
 /** Parse the text between the leading --- markers. Throws when there is no frontmatter. */
 export function parseFrontmatter(text: string): any {
 	const parts = text.split(/^---\n/m);
@@ -30,8 +40,9 @@ export function parseFrontmatter(text: string): any {
 
 /** All shelf skills, sorted by name. A directory counts as a skill iff it has a SKILL.md. */
 export function listSkills(): SkillEntry[] {
+	if (cache) return cache;
 	if (!fs.existsSync(SKILLS_DIR)) return [];
-	return fs
+	const entries = fs
 		.readdirSync(SKILLS_DIR, { withFileTypes: true })
 		.filter((d) => d.isDirectory() && fs.existsSync(path.join(SKILLS_DIR, d.name, "SKILL.md")))
 		.map((d) => {
@@ -48,6 +59,8 @@ export function listSkills(): SkillEntry[] {
 			return { name: dir, description, dark };
 		})
 		.sort((a, b) => a.name.localeCompare(b.name));
+	cache = entries;
+	return entries;
 }
 
 /** Case-insensitive substring match over name + description. Empty query matches everything. */

@@ -16,7 +16,7 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
-import { listSkills, parseFrontmatter, search } from "./catalog";
+import { invalidate, listSkills, parseFrontmatter, search } from "./catalog";
 import { openBrowser } from "./browser";
 import { registerInputSuggester } from "./lib/gates";
 
@@ -67,6 +67,7 @@ function enforceAll(): number {
 
 export default function shelfExtension(pi: ExtensionAPI) {
 	enforceAll();
+	invalidate(); // enforcer may have rewritten SKILL.md files; drop any stale snapshot
 	// Optional discovery: when the user's message matches shelf skills, mention
 	// them to the model as suggestions (never loads, never blocks, rate-limited).
 	registerInputSuggester(pi, {
