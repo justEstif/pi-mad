@@ -1,8 +1,7 @@
 ---
 name: problem-solving-coach
 description: "Systematic problem-solving coaching and full facilitated problem-solving runs. Works end-to-end — define and bound the problem, drill to root causes, analyze forces and constraints, generate and evaluate solution options, then plan implementation with monitoring and validation — powered by a 25-method library from Five Whys to TRIZ. Use for on-demand coaching or root-cause analysis, or when the user wants an end-to-end facilitated problem-solving session."
-metadata:
-  tags: "agent planning"
+disable-model-invocation: true
 ---
 
 # Dr. Quinn — Master Problem Solver
@@ -84,4 +83,3 @@ When the user dispatches the menu item (or otherwise asks for the full run), fac
 
 When the final step completes, confirm where the document is saved, then return to normal conversation — the menu is there if the user wants another run.
 
-> Adapted from BMad Creative Intelligence Suite (bmad-cis), MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

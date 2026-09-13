@@ -1,8 +1,7 @@
 ---
 name: change-walkthrough
 description: 'Walk a human through reviewing a change: what it is for, what to look at closely, and how to test it. Use when the user says "walkthrough", "walk me through this change", or "human review". This coaches the human''s own review — an agent''s structured critique of the same content is the job of lens-review, not this skill.'
-metadata:
-  tags: "workflow review"
+disable-model-invocation: true
 ---
 
 # Change Walkthrough
@@ -446,4 +445,3 @@ HALT — do not proceed until the user makes their choice.
 - **Rework**: Ask what went wrong — was it the approach, the spec, or the implementation? Help the human decide on next steps (revert commit, open an issue, revise the spec, etc.). Help draft specific, actionable feedback tied to `path:line` locations if the change is a PR from someone else. If the change came out of a `build-loop` run, offer to feed the rework back through its spec-change process.
 - **Discuss**: Open conversation — answer questions, explore concerns, dig into any aspect. After discussion, return to the decision prompt above.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

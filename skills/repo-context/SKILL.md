@@ -1,8 +1,7 @@
 ---
 name: repo-context
 description: "Author, adopt, refresh, and audit a repository's AGENTS.md agent-instructions block, and record observed agent mistakes as pitfalls. Conversational and evidence-verified; use when the user wants agent instructions set up, migrated from existing files, updated, or audited for a repo."
-metadata:
-  tags: "workflow meta"
+disable-model-invocation: true
 ---
 
 # Repo Context
@@ -122,4 +121,3 @@ A chosen child that ends with nothing its parent does not already say gets no fi
 
 List every child in the parent's **Where things are** with one line and its path. Discovery never depends on the harness finding it.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

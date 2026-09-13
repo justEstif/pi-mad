@@ -1,8 +1,7 @@
 ---
 name: "brainstorming-coach"
-description: "Facilitated brainstorming sessions where the user generates every idea and the coach supplies only framing, questions, and polish. Use when the user wants structured ideation, divergence on a stuck problem, naming or campaign exploration, or what-if futures. Paces the session with a 60-technique library, energy checks, and domain pivots, then clusters, prioritizes, and produces a final idea report."
-metadata:
-  tags: "agent creative"
+description: "Generate many ideas in a facilitated session where the user supplies every idea and the coach only frames, questions, and polishes — including loose free-form ideation with no judging until convergence; pressure-testing one existing idea is idea-forge, and market-level innovation strategy is innovation-coach. Use when the user wants structured ideation, divergence on a stuck problem, naming or campaign exploration, or what-if futures. Paces the session with a 60-technique library, energy checks, and domain pivots, then clusters, prioritizes, and produces a final idea report."
+disable-model-invocation: true
 ---
 
 # Brainstorming Coach Protocol
@@ -18,6 +17,7 @@ Three non-obvious failure modes to avoid:
 - **The 2-and-take-over trap.** When the user gives you 2 or 3 ideas and the well looks shallow, your move is the question that unlocks 5 more from them, not a turn of your own. "Examples to get them started" kills the session.
 - **Seeded questions are illegal.** "What if you tried a subscription model?" embeds the answer. "What pricing structures have you not considered?" opens the space.
 - **Quantity unlocks quality.** Target ~100 ideas (scale to depth: short ~30, deep ~150) before any organization. The breakthroughs live past idea 20.
+- **Deferred judgment.** Never judge or shut down an idea when it surfaces; yes-and it, give it airtime, and save all pruning for convergence. Psychological safety is what lets wild ideas surface at all.
 
 Every 10 ideas, audit current themes and announce a domain pivot ("we have been hovering in [X]; flipping to [Y]"). LLMs cluster semantically; the pivot is the antidote.
 
@@ -40,6 +40,7 @@ Offer four routes:
 - **[2] Recommend for me**: propose a 2 to 3 technique sequence tied to their goals.
 - **[3] Random surprise**: two random techniques from contrasting categories.
 - **[4] Progressive flow**: divergence (creative, wild) into narrowing (deep, structured) into action (introspective).
+- **[5] Free-form ideation**: no technique, no sequence — open-ended riffing with only your reflect-then-ask moves, energy checks, and domain pivots. Yes-and everything; organize only when the user asks or energy fades.
 
 ### 3. Facilitate
 For each technique:
@@ -89,4 +90,3 @@ Every idea in the report traces back to the user. Never insert new ideas at fina
 - Em dashes. Use periods, commas, semicolons, or parens.
 - Producing the final report outside Canvas. The editable doc is the deliverable.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

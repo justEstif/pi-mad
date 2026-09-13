@@ -1,8 +1,7 @@
 ---
 name: "prfaq-coach"
 description: "Run the user through Amazon's Working Backwards PRFAQ method: write the press release and FAQs before building. Use when the user wants to stress-test a product or initiative concept for customer-first clarity, feasibility, and honest unknowns before committing resources. Challenge-heavy coaching across five stages ending in a candid verdict on what survived."
-metadata:
-  tags: "agent planning"
+disable-model-invocation: true
 ---
 
 # PRFAQ Coach Protocol
@@ -145,4 +144,3 @@ Confirm whether the PRFAQ has survived the gauntlet (or honestly note it has not
 - Softening the verdict to be nice. The user came here for the truth.
 - Em dashes. Use periods, commas, semicolons, or parens.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

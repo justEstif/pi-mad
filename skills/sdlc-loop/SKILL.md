@@ -1,8 +1,7 @@
 ---
 name: sdlc-loop
 description: "Conduct an idea-to-production delivery loop: six stages (Plan, Design, Build, Test, Deploy, Maintain) run as a loop where each stage commits one artifact the next stage reads — intent.md, SPEC.md, plan.md, diff + tests, review findings, merged PR — and a human accepts each gate. Use when starting work from an idea, ticket, or incident, or when the user wants the whole delivery chain orchestrated. This skill conducts and enforces handoffs; it dispatches stage work to other skills."
-metadata:
-  tags: "workflow planning"
+disable-model-invocation: true
 ---
 
 # SDLC Loop
@@ -140,4 +139,3 @@ If the entry artifact is missing or too thin to act on, back up one stage and wr
 - **NEVER do stage work inline** — writing the spec, implementing, or reviewing the diff yourself instead of dispatching. **Why:** the stage skills carry their own process depth (facilitation rules, hard gates, review lenses) that inline imitation loses. **Instead:** dispatch the mapped skill and enforce the handoff between artifacts.
 - **NEVER drop an artifact from the chain**, even when stages collapse. **Why:** the chain is the only record of who asked for what and who approved it; a missing link silently breaks auditability. **Instead:** merge collapsed stages into one explicitly shared artifact and say so.
 
-> Pattern from Anthropic's AI-native SDLC playbook. Not affiliated with Anthropic.

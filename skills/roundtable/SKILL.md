@@ -1,8 +1,7 @@
 ---
 name: roundtable
 description: "Run a lively roundtable between distinct personas — debates, focus groups, red-team panels, open-cast scenes — where the cast talks to each other and to the user like real people, round after round. Also author and save recurring casts. Use when the user wants a multi-persona discussion or simulated panel with genuinely different voices, or to create, edit, or reuse a saved cast."
-metadata:
-  tags: "agent creative"
+disable-model-invocation: true
 ---
 
 # Roundtable
@@ -61,4 +60,3 @@ Then drop back to normal mode.
 
 **lens-review** is structured critique: named lenses over a diff or document, triaged findings, a report. A roundtable is simulated discussion — no findings format, no triage, just people arguing. When the user wants content reviewed and findings reported, that's lens-review's job (an adversarial *panel room* can review too, but it produces a conversation, not findings). When they want perspectives to collide — a debate, a focus group, a red-team room, several minds thinking out loud — run it here.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

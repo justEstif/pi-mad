@@ -1,8 +1,7 @@
 ---
 name: architecture-spine
 description: "Work out and record the architecture decisions that keep separately built parts of a system consistent, in a short architecture spine. Creates, updates, or validates one via a coaching path or a fast draft; works from a spec, a raw idea, or an existing codebase. Use when the user wants to create the technical architecture, draft an architecture spine or solution design, or validate one."
-metadata:
-  tags: "workflow planning"
+disable-model-invocation: true
 ---
 
 # Architecture Spine
@@ -68,4 +67,3 @@ Amend an existing spine or provided artifact. Resume from its `.memlog.md` (the 
 
 The standalone intent — critique an existing spine without changing it. Run the Reviewer Gate (`references/reviewer-gate.md`) against it and deliver the report, then offer to roll the findings into an Update. (At Finalize the same gate runs as your own pre-handoff check, where you apply the fixes instead of reporting.)
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

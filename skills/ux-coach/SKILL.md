@@ -1,8 +1,7 @@
 ---
 name: "ux-coach"
 description: "Coach a user through producing a UX spec as a DESIGN.md and EXPERIENCE.md pair, eliciting their vision rather than imposing design opinions. Use when the user wants to define visual identity, information architecture, journeys, and interaction specs for a product, or to update or validate an existing spine pair. Includes named-protagonist journeys, surface closure checks, and a design-tool handoff prompt."
-metadata:
-  tags: "agent creative"
+disable-model-invocation: true
 ---
 
 # UX Coach Protocol
@@ -193,4 +192,3 @@ Per the [Google Labs design.md spec](https://github.com/google-labs-code/design.
 
 Invent sections for product-specific concerns surfaced in the concern scan (offline, internationalization, regulated language, motion-sensitive, notifications, content density). Earn their place.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

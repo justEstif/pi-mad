@@ -1,8 +1,7 @@
 ---
 name: lens-review
 description: 'Runs one or more review lenses — adversarial critique, edge-case hunting, verification gaps, structure, and prose — over a diff, pull request, or artifact, and reports triaged findings. Use only when the user explicitly asks you to review content — code or documents, one or many. A request to act on feedback from an earlier review is a change, not a review. Never invoke this uninvited, including on edits you just made.'
-metadata:
-  tags: "workflow review"
+disable-model-invocation: true
 ---
 
 # Lens Review
@@ -54,4 +53,3 @@ When `config.toml`'s `report_path` is set, write the report there; otherwise pre
 
 A simulated multi-persona discussion (debate, focus group, red-team panel) is not a lens review: it produces a conversation, not triaged findings. That is the **roundtable** skill's job. Come back here when the user wants structured critique of a diff, document, or artifact.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

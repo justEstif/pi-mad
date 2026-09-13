@@ -1,8 +1,7 @@
 ---
 name: deep-recon
 description: "Frame decision-grade research and run it three ways: draft a prompt for the user's own deep-research tool, process a finished report into a cited digest other skills can use directly, or run the research here with parallel web searches. Six research types — market, domain, technical, competitive, user-voice, academic-lit — plus a select shape for choosing between candidates. Use when the user wants research drafted, run, or processed in service of a decision."
-metadata:
-  tags: "workflow research"
+disable-model-invocation: true
 ---
 
 # Deep Recon
@@ -84,4 +83,3 @@ Omit keys for artifacts not produced; the `claims` counts are read from the ledg
 
 The **market-research** skill covers the conversational side of market, industry, competitive, and regulatory research and drafts its own deep-research handoff brief — when the user wants a coached research conversation in those areas, prefer it. This skill adds what that one lacks: **Process** (a finished report — from any tool — into a cited digest downstream skills consume), the **user-voice, academic-lit, domain, and technical** packs, the **select** shape for choosing between candidates, and native **Run** (parallel fan-out here, with verification, red team, and lifecycle refresh). Route on the ask, not the topic: "process this report", "literature review", "help me choose between" → here; "help me understand this market" → market-research, with its brief processable here afterward.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

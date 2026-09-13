@@ -1,8 +1,6 @@
 ---
 name: "workflow-builder"
 description: "Builds, edits, and analyzes skills and workflows through conversational discovery. Use when the user wants to create a new skill from a rough idea, modify or reshape an existing skill, or run a quality analysis that scores a skill with review lenses and produces an actionable report. Turns a half-formed idea into a lean, outcome-driven skill through a goal-driven build loop."
-metadata:
-  tags: "tool meta"
 disable-model-invocation: true
 ---
 
@@ -43,4 +41,3 @@ Defaults live in `config.toml` next to this file; edit values directly. Read the
 
 Build and Edit share one flow because editing is the same loop pointed at an existing skill: you read what is relevant to the change, capture the new direction in the memlog, and apply the same earn-its-place test to anything you add.
 
-> Adapted from bmad-code-org/bmad-builder, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

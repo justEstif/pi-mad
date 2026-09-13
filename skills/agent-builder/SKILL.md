@@ -1,8 +1,6 @@
 ---
 name: "agent-builder"
 description: "Builds, edits, or analyzes agent skills through conversational discovery. Use when the user wants to create a new agent with a named persona and focused capabilities, change how an existing agent behaves, or run a quality analysis that scores an agent with review lenses and produces an actionable report. Produces stateless, memory, or autonomous agents along one design gradient."
-metadata:
-  tags: "tool meta"
 disable-model-invocation: true
 ---
 
@@ -53,4 +51,3 @@ Defaults live in `config.toml` next to this file; edit values directly. Read the
 
 When the user hands over an existing agent without saying which intent, present the three-way choice and route on the answer: Analyze runs the lenses and returns an actionable report; Edit changes specific behavior while keeping the current approach; Rebuild rethinks from core outcomes and persona using the old agent as reference material, which is the Create flow pointed at existing input.
 
-> Adapted from bmad-code-org/bmad-builder, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

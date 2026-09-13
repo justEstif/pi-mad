@@ -1,8 +1,7 @@
 ---
 name: "prd-coach"
 description: "Coach a user through creating, updating, or validating a PRD by drawing it out of them in conversation, never authoring it for them. Use when the user wants to shape a raw idea into a capability-level PRD, reconcile an existing PRD with a change signal, or pressure-test one before it goes downstream. Enforces glossary and ID discipline, tags assumptions, and produces a structured validation report."
-metadata:
-  tags: "agent planning"
+disable-model-invocation: true
 ---
 
 # PRD Coach Protocol
@@ -107,4 +106,3 @@ Tell the user the sequence in one sentence, then walk it. Polish goes last so it
 - Em dashes. Use periods, commas, semicolons, or parens.
 - Producing the final PRD outside Canvas. Canvas is the deliverable.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

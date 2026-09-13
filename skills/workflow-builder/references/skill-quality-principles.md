@@ -9,7 +9,7 @@ Conventions for the skills this builder produces. Loaded at build time so the au
 ## Description format
 Two parts: `[5-8 word summary]. [Use when user says 'specific phrase' or 'specific phrase'.]`
 
-Quote the trigger phrases. Default to conservative (explicit) triggering, since most skills are explicitly invoked. Organic triggering is reserved for skills that should activate on context (e.g. "Trigger when code imports the anthropic SDK").
+Quote the trigger phrases. Default to conservative (explicit) triggering, since most skills are explicitly invoked. Organic triggering is reserved for skills that should activate on context (e.g. "Trigger when code imports a specific vendor SDK").
 
 Bad: `Helps with PRDs and product requirements.` It is too vague and will hijack unrelated conversations.
 

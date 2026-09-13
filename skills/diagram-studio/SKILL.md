@@ -1,8 +1,7 @@
 ---
 name: "diagram-studio"
-description: "Design and produce diagrams — flowcharts, architecture, sequence, mind maps — as Excalidraw, through the connected Excalidraw MCP canvas or standalone .excalidraw files. Use when the user asks to create a diagram, draw a flowchart, visualize an architecture or process, turn a spec or spine into a visual, or asks for an Excalidraw file."
-metadata:
-  tags: "tool creative"
+description: "Design and produce diagrams — flowcharts, architecture, sequence, mind maps — as Excalidraw through the connected MCP canvas or standalone .excalidraw files — plus an explain mode for lightweight visual explanation. Use when the user asks to create a diagram, draw a flowchart, visualize an architecture or process, turn a spec or spine into a visual, or asks for an Excalidraw file, or wants the current topic shown visually. Explain mode answers understanding questions inline with concise code-shape sketches (pseudocode, call and component trees, Mermaid, diffs) or focused HTML artifacts when the point needs more than a sketch."
+disable-model-invocation: true
 ---
 
 # Diagram Studio
@@ -38,6 +37,70 @@ python3 scripts/validate_excalidraw.py diagram.excalidraw                  # str
 ```
 
 The spec JSON schema and layout options are documented in `references/excalidraw-schema.md`.
+
+## Explain mode (lightweight explanation views)
+
+When the goal is for the user to *understand the current topic* — not to produce a kept diagram artifact — skip Excalidraw and reply inline with the smallest view that makes the point. No preamble, prose kept brief.
+
+**Decision rule:** structure to explain → diagram or sketch inline; interactivity, dense layout comparison, or a visual UI concept → focused HTML artifact. Only use the Excalidraw paths above when the user wants a persistent, editable, or presentable diagram.
+
+Inline options, smallest first:
+
+- **Logic / algorithm** → pseudocode:
+
+```text
+on(save)
+  if content is unchanged
+    return cached result
+  write new content
+  return fresh result
+```
+
+- **Runtime control flow** → call tree:
+
+```text
+submitForm
+  createSession
+    persistPrompt
+    launchAgent
+  navigateToSession
+```
+
+- **UI structure** → component tree with state and module boundaries that matter:
+
+```tsx
+<SessionPage> (apps/example/src/routes/session.tsx)
+  useSessionEvents()
+  <SessionToolbar>
+    <RunSkillButton> (packages/ui)
+```
+
+- **File responsibility / broad refactor** → shallow file tree:
+
+```text
+src/
+├── commands/       # parses user actions
+├── sessions/       # owns session state
+└── transport/      # sends API requests
+```
+
+- **Interaction or data flow** → Mermaid (sequence, flow, state):
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI
+    participant Daemon
+    User->>UI: choose command
+    UI->>Daemon: send expanded prompt
+    Daemon-->>UI: stream result
+```
+
+- **"What changes"** → `diff`, matching the diff shape to the topic (component tree for a component change, file tree for a layout change, call tree for a control-flow change, pseudocode for a logic change).
+- **Copyable target shape or mostly-new block** → the whole code block, only the calls, files, props, states, and boundaries needed for the current question.
+- **Dense concept, layout comparison, or visual UI** → one focused HTML file — diagram, infographic, or short slide deck. Match the product's colors, type, and spacing; use real labels and data; support desktop and mobile. Then open it (`open path/to/<slug>.html`).
+
+Place each visual next to the short text it supports. Use one or several; never all — don't overwhelm. You may combine this with diagram-types.md fit selection: if the explanation view turns out to be worth keeping, promote it to a real Excalidraw diagram.
 
 ## Modes
 
@@ -76,4 +139,3 @@ Resolve from the request, not the user's expertise:
 - `architecture-spine` — turn a settled architecture spine into a diagram of the boundaries and invariants.
 - `product-design-init` — wireframe and flow sketches during the design-standards work.
 
-> Adapted from bmad-builder's bmad-excalidraw sample, MIT © BMad Code, LLC. Not affiliated with BMad Code.

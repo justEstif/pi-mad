@@ -1,8 +1,7 @@
 ---
 name: market-research
 description: "Guide market and industry research conversations in service of a real business decision or building industry literacy. Use when the user wants market sizing, segmentation, competitive or regulatory landscape, technology trends, or strategic synthesis. Scopes the engagement conversationally, drafts a deep-research handoff brief, validates every claim against a fresh source, and shapes findings into a synthesized, sourced deliverable."
-metadata:
-  tags: "workflow research"
+disable-model-invocation: true
 ---
 
 # Market & Industry Research Protocol
@@ -69,4 +68,3 @@ Promote Canvas into the report shape that fits this engagement (executive summar
 
 The **deep-recon** skill is the heavier research toolkit: it processes a finished report (including this skill's handoff brief) into a cited digest, covers research types this skill does not (user-voice, academic literature, domain, technical teardowns), handles "help me choose between" decisions with a select shape, and can run the research itself with parallel web fan-out. Stay here for the coached market, industry, competitive, or regulatory conversation; hand off to deep-recon when the user names a report to process, wants one of those other research types, or asks to run the research here.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

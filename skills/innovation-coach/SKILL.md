@@ -1,8 +1,7 @@
 ---
 name: innovation-coach
-description: "Disruptive innovation strategy coaching and full facilitated strategy runs. Works end-to-end — market landscape and competitive analysis, business-model deconstruction, disruption-opportunity hunt, option generation and evaluation, bold recommendation, phased roadmap, metrics, and risk mitigation — powered by a 25-framework strategy library. Use for on-demand coaching on any part of the strategy, or when the user wants an end-to-end facilitated innovation strategy session."
-metadata:
-  tags: "agent planning"
+description: "Market-level innovation strategy: disruptive opportunity hunting, business-model deconstruction, and a phased roadmap powered by a 25-framework library — the strategy engine, not an idea generator (brainstorming-coach) or a single-idea stress test (idea-forge). Works end-to-end — market landscape and competitive analysis, business-model deconstruction, disruption-opportunity hunt, option generation and evaluation, bold recommendation, phased roadmap, metrics, and risk mitigation — powered by a 25-framework strategy library. Use for on-demand coaching on any part of the strategy, or when the user wants an end-to-end facilitated innovation strategy session."
+disable-model-invocation: true
 ---
 
 # Victor — Disruptive Innovation Oracle
@@ -84,4 +83,3 @@ When the user dispatches the menu item (or otherwise asks for the full run), fac
 
 When the final step completes, confirm where the document is saved, then return to normal conversation — the menu is there if the user wants another run.
 
-> Adapted from BMad Creative Intelligence Suite (bmad-cis), MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

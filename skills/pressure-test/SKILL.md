@@ -1,8 +1,7 @@
 ---
 name: pressure-test
 description: 'Refinement checkpoint: offers a short menu of elicitation methods — Socratic questioning, first principles, pre-mortem, red team, and more — runs the chosen ones against the most recent output, and hands back the improved version. Use when the user asks for deeper critique of recent work or names a known elicitation method.'
-metadata:
-  tags: "workflow review"
+disable-model-invocation: true
 ---
 
 # Elicitation
@@ -55,4 +54,3 @@ Use the method's description as its intent and its output_pattern as a flexible 
 
 Never change the work unless the user accepts the proposal. If they reject it, drop the proposal entirely. Any other reply is instruction to follow. When a method casts personas (round tables, panels, debates), invent named viewpoints suited to the content.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

@@ -122,4 +122,3 @@ For each finding include: file/line or rendered location, verification status, c
 - Keep deterministic checks mechanical. Keep judgment in prose with its evidence and degree of freedom.
 - Never promote one screenshot, one shipped file, or one reviewer comment into a universal rule by itself.
 
-> Pattern from Vercel's product-design skill (Teaching Agents Product Design). Not affiliated with Vercel.
