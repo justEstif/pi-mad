@@ -63,12 +63,21 @@ export function listSkills(): SkillEntry[] {
 	return entries;
 }
 
-/** Case-insensitive substring match over name + description. Empty query matches everything. */
+/** Ranked, case-insensitive match over name + description: name-prefix
+ *  matches first, then name-contains, then description-contains — so the list
+ *  reorders usefully as you type instead of only filtering. Empty query: all. */
 export function search(query: string): SkillEntry[] {
 	const q = query.trim().toLowerCase();
 	const all = listSkills();
 	if (!q) return all;
-	return all.filter(
-		(s) => s.name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q),
-	);
+	const rank = (s: SkillEntry): number =>
+		s.name.toLowerCase().startsWith(q) ? 0
+		: s.name.toLowerCase().includes(q) ? 1
+		: s.description.toLowerCase().includes(q) ? 2
+		: 3;
+	return all
+		.map((s) => ({ s, r: rank(s) }))
+		.filter((x) => x.r < 3)
+		.sort((a, b) => a.r - b.r || a.s.name.localeCompare(b.s.name))
+		.map((x) => x.s);
 }

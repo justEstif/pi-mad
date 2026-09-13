@@ -69,7 +69,47 @@ function enforceAll(): string[] {
 	return broken;
 }
 
+/** Levenshtein distance — small enough to inline. */
+function editDistance(a: string, b: string): number {
+	const dp = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+	for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+	for (let i = 1; i <= a.length; i++)
+		for (let j = 1; j <= b.length; j++)
+			dp[i][j] = Math.min(
+				dp[i - 1][j] + 1,
+				dp[i][j - 1] + 1,
+				dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1),
+			);
+	return dp[a.length][b.length];
+}
+
+/** "Did you mean" for /skill:<name> misses: when the user invokes an unknown
+ *  skill name, steer the closest catalog name (edit distance <= 2) so pi's own
+ *  unknown-skill error is immediately followed by the fix. */
+function registerSkillTypoGuard(pi: ExtensionAPI): void {
+	const seen = new Set<string>();
+	pi.on("input", (event) => {
+		const m = event.text.trim().match(/^\/skill:([a-z0-9-]+)\s*$/i);
+		if (!m) return;
+		const typed = m[1].toLowerCase();
+		if (seen.has(typed)) return;
+		const names = listSkills().map((s) => s.name);
+		if (names.includes(typed)) return;
+		const near = names
+			.map((n) => ({ n, d: editDistance(typed, n) }))
+			.filter((x) => x.d <= 2)
+			.sort((a, b) => a.d - b.d)[0];
+		if (!near) return;
+		seen.add(typed);
+		pi.sendUserMessage(
+			`[pi-shelf] no skill named "${typed}" — did you mean /skill:${near.n}?`,
+			{ deliverAs: "steer" },
+		);
+	});
+}
+
 export default function shelfExtension(pi: ExtensionAPI) {
+	registerSkillTypoGuard(pi);
 	const broken = enforceAll();
 	invalidate(); // enforcer may have rewritten SKILL.md files; drop any stale snapshot
 

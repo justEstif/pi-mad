@@ -139,4 +139,3 @@ Resolve from the request, not the user's expertise:
 - `architecture-spine` — turn a settled architecture spine into a diagram of the boundaries and invariants.
 - `product-design-init` — wireframe and flow sketches during the design-standards work.
 
-> Adapted from bmad-builder's bmad-excalidraw sample, MIT © BMad Code, LLC. Not affiliated with BMad Code.

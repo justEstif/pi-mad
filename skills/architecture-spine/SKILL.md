@@ -67,4 +67,3 @@ Amend an existing spine or provided artifact. Resume from its `.memlog.md` (the 
 
 The standalone intent — critique an existing spine without changing it. Run the Reviewer Gate (`references/reviewer-gate.md`) against it and deliver the report, then offer to roll the findings into an Update. (At Finalize the same gate runs as your own pre-handoff check, where you apply the fixes instead of reporting.)
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

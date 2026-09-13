@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-// Deterministic skill validator (ported from bmad-method/tools/validate_skills.py).
+// Deterministic skill validator (ported from an upstream validate_skills script).
 // Usage: bun tools/validate_skills.ts [dirs...]   (default: skills/)
 import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
 import { join, basename, dirname, relative, extname } from "node:path";

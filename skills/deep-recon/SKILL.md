@@ -83,4 +83,3 @@ Omit keys for artifacts not produced; the `claims` counts are read from the ledg
 
 The **market-research** skill covers the conversational side of market, industry, competitive, and regulatory research and drafts its own deep-research handoff brief — when the user wants a coached research conversation in those areas, prefer it. This skill adds what that one lacks: **Process** (a finished report — from any tool — into a cited digest downstream skills consume), the **user-voice, academic-lit, domain, and technical** packs, the **select** shape for choosing between candidates, and native **Run** (parallel fan-out here, with verification, red team, and lifecycle refresh). Route on the ask, not the topic: "process this report", "literature review", "help me choose between" → here; "help me understand this market" → market-research, with its brief processable here afterward.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

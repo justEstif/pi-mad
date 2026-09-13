@@ -41,4 +41,3 @@ Defaults live in `config.toml` next to this file; edit values directly. Read the
 
 Build and Edit share one flow because editing is the same loop pointed at an existing skill: you read what is relevant to the change, capture the new direction in the memlog, and apply the same earn-its-place test to anything you add.
 
-> Adapted from bmad-code-org/bmad-builder, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

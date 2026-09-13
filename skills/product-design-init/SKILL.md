@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Product Design Init
 
-One-shot generator that scaffolds a **repo-local `product-design` skill** into the user's repository, following the structure Vercel published for its product-design skill: a 5-mode request router, an operating contract, routed references, exemplars from shipped PRs, and a coverage-gaps list. It ships **structure, not standards** — every reference file is an empty scaffold with guidance comments. Only the user's team can record their product judgment. It also writes the deterministic content-standards track below (DESIGN.md judgment + brand.css vocabulary + named anti-patterns) and **supersedes the standalone `init-design-system` skill** — nothing else needs to bootstrap a repo design system.
+One-shot generator that scaffolds a **repo-local `product-design` skill** into the user's repository, following a published product-design skill structure: a 5-mode request router, an operating contract, routed references, exemplars from shipped PRs, and a coverage-gaps list. It ships **structure, not standards** — every reference file is an empty scaffold with guidance comments. Only the user's team can record their product judgment. It also writes the deterministic content-standards track below (DESIGN.md judgment + brand.css vocabulary + named anti-patterns) and **supersedes the standalone `init-design-system` skill** — nothing else needs to bootstrap a repo design system.
 
 Run once per repository. Afterwards, design work in that repo is governed by the generated skill, not this one.
 
@@ -36,7 +36,7 @@ Copy assets from this skill's directory into the target repo, substituting `{{PR
 | `assets/tooling-evals/FIXTURES-README.md` | `tooling/evals/FIXTURES-README.md` |
 | `assets/brand.css` (template) | `.agents/skills/product-design/references/brand.css` (placeholders replaced, per §2b) |
 
-Do not create anything else. Do not copy Vercel's standards content, design-system rules, or any invented guidance into the scaffolds.
+Do not create anything else. Do not copy upstream standards content, design-system rules, or any invented guidance into the scaffolds.
 
 ## 2b. Content-standards track (DESIGN.md + brand.css + anti-patterns)
 
@@ -70,7 +70,7 @@ Skip:
 
 ## 4. Close: print the maintenance loop
 
-Finish by printing this loop (adapted from Vercel's published workflow):
+Finish by printing this loop (adapted from the published workflow):
 
 - **Review evidence → propose guideline updates.** Collect design feedback (PR comments, issues, support threads) as raw evidence; group and verify it separately from judgment; every candidate stays pending until a human accepts it into the narrowest destination — a routed reference, an exemplar, a lint rule, an eval, or coverage-gaps.md.
 - **Coverage-gaps tracks unstandardized areas.** Any decision agents repeatedly make without a recorded standard gets a row in `coverage-gaps.md` until the team accepts one.
@@ -83,7 +83,7 @@ Report: files written, placeholders still marked `TODO(...)`, and the suggested 
 
 ## Boundaries
 
-- **NEVER ship invented or Vercel-owned standards** (their product-judgment bullets, design-system rules, named Vercel tooling) in any scaffold.
+- **NEVER ship invented or upstream-owned standards** (their product-judgment bullets, design-system rules, named upstream tooling) in any scaffold.
   **Why:** the generated skill must encode the user's product judgment, not borrow authority from another team's decisions; borrowed rules are unverifiable against this repo and mislead every later agent.
   **Instead:** ship headings, guidance comments, and the rule-record format; the team fills content with evidence and human acceptance.
 - **NEVER blur the modes the generated skill enforces** — an audit must not become edits, a copy pass must not become a redesign, hardening must not change direction.
@@ -91,4 +91,3 @@ Report: files written, placeholders still marked `TODO(...)`, and the suggested 
   **Instead:** keep each scaffold's mode contract intact verbatim and let the generated skill's own router resolve ambiguity at request time.
 - Keep placeholders visible (`TODO(...)`); never delete a scaffold file for being empty, and never fill it with plausible-sounding standards to look complete.
 
-> Pattern from Vercel's product-design skill (Teaching Agents Product Design). Not affiliated with Vercel.

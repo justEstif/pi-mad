@@ -144,4 +144,3 @@ Confirm whether the PRFAQ has survived the gauntlet (or honestly note it has not
 - Softening the verdict to be nice. The user came here for the truth.
 - Em dashes. Use periods, commas, semicolons, or parens.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

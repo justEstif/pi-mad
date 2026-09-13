@@ -68,4 +68,3 @@ Promote Canvas into the report shape that fits this engagement (executive summar
 
 The **deep-recon** skill is the heavier research toolkit: it processes a finished report (including this skill's handoff brief) into a cited digest, covers research types this skill does not (user-voice, academic literature, domain, technical teardowns), handles "help me choose between" decisions with a select shape, and can run the research itself with parallel web fan-out. Stay here for the coached market, industry, competitive, or regulatory conversation; hand off to deep-recon when the user names a report to process, wants one of those other research types, or asks to run the research here.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

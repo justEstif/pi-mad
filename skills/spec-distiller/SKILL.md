@@ -1,6 +1,6 @@
 ---
 name: spec-distiller
-description: "Distill any input — an idea, brief, PRD, transcript, or mixed notes — into a short SPEC.md carrying a five-field kernel (Why, Capabilities, Constraints, Non-goals, Success signal), with update and validate modes and an optional story-break. Use when the user wants to create a spec, distill something into a spec, update or validate a spec, or break a spec into stories."
+description: "One-shot distiller, not a coach: turns any input — idea, brief, PRD, transcript, or mixed notes — directly into a short SPEC.md with a five-field kernel (Why, Capabilities, Constraints, Non-goals, Success signal); use prd-coach or product-brief-coach when you want to draw the document out in conversation instead. With update and validate modes and an optional story-break. Use when the user wants to create a spec, distill something into a spec, update or validate a spec, or break a spec into stories."
 disable-model-invocation: true
 ---
 
@@ -157,4 +157,3 @@ Natural next steps downstream: draft an architecture spine against the spec (`ar
 - `sources:` array of paths to files that were **fully absorbed** into the SPEC, with no remaining downstream value (e.g., a PRD whose every load-bearing claim is now in the kernel). Listed for audit and for re-reading on update. Downstream does NOT read these. Files that downstream still needs to read belong in `companions:`, not here.
 - **Do not list** the memlog, README files, organizational artifacts, or any operational record of how upstream flows produced their artifacts. Those are not source content; they are process metadata that downstream consumers don't need.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

@@ -51,4 +51,3 @@ Defaults live in `config.toml` next to this file; edit values directly. Read the
 
 When the user hands over an existing agent without saying which intent, present the three-way choice and route on the answer: Analyze runs the lenses and returns an actionable report; Edit changes specific behavior while keeping the current approach; Rebuild rethinks from core outcomes and persona using the old agent as reference material, which is the Create flow pointed at existing input.
 
-> Adapted from bmad-code-org/bmad-builder, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

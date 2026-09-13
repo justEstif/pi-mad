@@ -121,4 +121,3 @@ A chosen child that ends with nothing its parent does not already say gets no fi
 
 List every child in the parent's **Where things are** with one line and its path. Discovery never depends on the harness finding it.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

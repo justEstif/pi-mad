@@ -192,4 +192,3 @@ Per the [Google Labs design.md spec](https://github.com/google-labs-code/design.
 
 Invent sections for product-specific concerns surfaced in the concern scan (offline, internationalization, regulated language, motion-sensitive, notifications, content density). Earn their place.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

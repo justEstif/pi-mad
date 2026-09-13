@@ -8,7 +8,7 @@ Reference for generating valid `.excalidraw` files. Use this when constructing d
 {
   "type": "excalidraw",
   "version": 2,
-  "source": "bmad-excalidraw",
+  "source": "shelf-excalidraw",
   "elements": [],
   "appState": {
     "gridSize": null,

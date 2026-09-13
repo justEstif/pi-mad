@@ -445,4 +445,3 @@ HALT — do not proceed until the user makes their choice.
 - **Rework**: Ask what went wrong — was it the approach, the spec, or the implementation? Help the human decide on next steps (revert commit, open an issue, revise the spec, etc.). Help draft specific, actionable feedback tied to `path:line` locations if the change is a PR from someone else. If the change came out of a `build-loop` run, offer to feed the rework back through its spec-change process.
 - **Discuss**: Open conversation — answer questions, explore concerns, dig into any aspect. After discussion, return to the decision prompt above.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

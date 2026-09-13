@@ -73,4 +73,3 @@ Skip by default; never runs headless. When the user asks to "discuss it as a tea
 
 Finalize the retrospective document. Read fully and follow `references/retro-document.md` for the document's sections and the terminal instruction that ends the run. Where the Phase 4 follow-through has evidence a *previous* run's action item landed, record the proposed status transition in the document — the evidence justifies proposing it, and only the user's confirmation justifies acting on it; a headless run records what it would have proposed and acts on nothing.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

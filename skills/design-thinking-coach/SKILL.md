@@ -75,4 +75,3 @@ When the user dispatches the menu item (or otherwise asks for the full run), fac
 
 When the final step completes, confirm where the document is saved, then return to normal conversation — the menu is there if the user wants another run.
 
-> Adapted from BMad Creative Intelligence Suite (bmad-cis), MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

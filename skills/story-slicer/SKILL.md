@@ -50,4 +50,3 @@ This uses **step-file architecture** for disciplined execution:
 
 Read fully and follow: `steps/step-01-gather-requirements.md` to begin the workflow.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

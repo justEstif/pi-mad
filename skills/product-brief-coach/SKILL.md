@@ -118,4 +118,3 @@ updated: {date}
 [Where this goes if it succeeds. What it becomes in 2-3 years. Inspiring but grounded.]
 ```
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

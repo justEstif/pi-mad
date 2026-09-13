@@ -68,4 +68,3 @@ This uses **step-file architecture** for disciplined execution:
 
 Read fully and follow `step-01-clarify-and-route.md` to begin the workflow.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

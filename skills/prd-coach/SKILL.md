@@ -106,4 +106,3 @@ Tell the user the sequence in one sentence, then walk it. Polish goes last so it
 - Em dashes. Use periods, commas, semicolons, or parens.
 - Producing the final PRD outside Canvas. Canvas is the deliverable.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

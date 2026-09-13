@@ -1,6 +1,6 @@
 # The six plays, adapted to pi + pi-shelf
 
-Per-stage detail behind the `sdlc-loop` conductor: what changes, getting started, concrete steps, governance, and how to measure. Adapted from Anthropic's AI-native SDLC playbook to pi and the pi-shelf skill set.
+Per-stage detail behind the `sdlc-loop` conductor: what changes, getting started, concrete steps, governance, and how to measure. Adapted from an AI-native SDLC playbook to pi and the pi-shelf skill set.
 
 Shared mechanics first — they apply to every play:
 
@@ -196,4 +196,3 @@ Findings and triage decisions are logged; fixes go through the normal gates — 
 
 ---
 
-> Pattern from Anthropic's AI-native SDLC playbook. Not affiliated with Anthropic.

@@ -2,7 +2,7 @@
 
 Placeholder for deterministic-ish evals of this repo's product-design guidance. Do not delete; build fixtures here once the team has accepted real decisions (an eval against unrecorded standards tests nothing).
 
-> SCAFFOLD — describes the pattern; contains no fixtures yet. Adapted from Vercel's published product-design eval approach.
+> SCAFFOLD — describes the pattern; contains no fixtures yet. Adapted from a published product-design eval approach.
 
 ## The pattern
 

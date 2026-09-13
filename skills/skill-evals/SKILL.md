@@ -126,4 +126,3 @@ Tell the user where the run folder is when you finish.
 - Failures cite specific expectations with evidence, and a pass that looks superficial is flagged rather than papered over.
 - A baseline run that the skill no longer wins points to retiring the skill, not patching it.
 
-> Adapted from bmad-builder, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

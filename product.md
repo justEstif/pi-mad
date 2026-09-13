@@ -4,7 +4,7 @@
 
 ## What it is
 
-A personal, curated skill shelf for [pi](https://github.com/badlogic/pi-mono) — one repo, one resource type (**skills**; workflows are skills), all-dark by default. The agent never auto-invokes anything from the shelf; the agent can *search* it, *suggest* from it, and *enforce* it — but a human names the skill to pull it. Formerly **pi-mad** (a BMAD-METHOD port project); renamed when the vision shifted from "ported framework" to "personal library."
+A personal, curated skill shelf for [pi](https://github.com/badlogic/pi-mono) — one repo, one resource type (**skills**; workflows are skills), all-dark by default. The agent never auto-invokes anything from the shelf; the agent can *search* it, *suggest* from it, and *enforce* it — but a human names the skill to pull it. Formerly **pi-mad** (an upstream-methodology port project); renamed when the vision shifted from "ported framework" to "personal library."
 
 ## Who it's for
 
@@ -29,7 +29,7 @@ One person: the author. **[A1: audience-of-one; distribution is dead.** Conseque
 
 ## Contents (current + planned)
 
-- **30 skills** ported from BMAD lineage (BMAD-METHOD, bmad-cis workshops, bmad-builder), machinery stripped per PORTING.md. Upstream re-audit 2026-09: nothing further worth porting; web-bundles, builder samples, persona shells exhausted.
+- **30 skills** ported from upstream methodology collections, machinery stripped per the porting recipe (retired). Upstream re-audit 2026-09: nothing further worth porting; web-bundles, builder samples, persona shells exhausted.
 - **5 movers from dotfiles**, 4 as merges:
   - `craft-message` → `storytelling-coach` (sharpen mode over story-types.csv)
   - `show-me` → `diagram-studio` (explain mode: code-shape sketches, HTML artifacts)
@@ -37,7 +37,7 @@ One person: the author. **[A1: audience-of-one; distribution is dead.** Conseque
   - `skill-creator` → `skill-evals` (one lifecycle meta-skill: create/audit/eval/optimize)
   - `repo-guardrails` → standalone (pairs with the gate library)
   - Result: 30 → 31 skills.
-- **Vendored:** `bmad-method/tools/validate_skills.py` (deterministic frontmatter/quality gate; no `_bmad` deps) as the shelf's conformance check, feeding skill-evals.
+- **Vendored:** an upstream `validate_skills` script (deterministic frontmatter/quality gate) as the shelf's conformance check, feeding skill-evals.
 
 ## Structure
 
@@ -50,7 +50,7 @@ pi-shelf/
     suggest.ts        # quiet input suggester
   skills/             # 31 skills, all-dark, tagless
   tools/              # validate_skills.py (vendored)
-  README.md (identity + install + pointer) · PORTING.md · AUDIT.md · LICENSE
+  README.md (identity + install + pointer) · product.md · LICENSE
 ```
 
 ## Assumptions register
@@ -62,7 +62,7 @@ pi-shelf/
 
 ## Explicit non-goals
 
-- Being a framework (the BMAD lesson: machinery loses, content wins).
+- Being a framework (the ported-upstream lesson: machinery loses, content wins).
 - Distributing to an audience, gallery polish, semver contract. **[A1]**
 - Agents as shipped content; per-project skill policies; load-time templating.
 

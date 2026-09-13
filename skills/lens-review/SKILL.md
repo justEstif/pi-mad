@@ -53,4 +53,3 @@ When `config.toml`'s `report_path` is set, write the report there; otherwise pre
 
 A simulated multi-persona discussion (debate, focus group, red-team panel) is not a lens review: it produces a conversation, not triaged findings. That is the **roundtable** skill's job. Come back here when the user wants structured critique of a diff, document, or artifact.
 
-> Adapted from BMAD-METHOD, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.

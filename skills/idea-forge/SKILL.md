@@ -1,6 +1,6 @@
 ---
 name: idea-forge
-description: "Pressure-test a half-formed idea in a questioning conversation with rotating skeptic personas until you can act on it or drop it with confidence. Optionally writes a short forged-idea.md brief for planning skills to build on. Use when the user wants to forge an idea, stress-test or harden an idea, or pressure-test their thinking before committing to it."
+description: "Pressure-tests ONE existing idea with rotating skeptic personas until you can act on it or drop it with confidence — unlike brainstorming-coach, which generates many new ideas. Optionally writes a short forged-idea.md brief for planning skills to build on. Use when the user wants to forge an idea, stress-test or harden an idea, or pressure-test their thinking before committing to it."
 disable-model-invocation: true
 ---
 
@@ -76,4 +76,3 @@ The session can end in three valid states:
 
 **Always render `forge-report.html`** as a self-contained HTML file the user can open, with inline CSS and an inline-SVG seal or stamp. Summarize the outcome, the locked decisions, what was rejected and why, and the weak points that survived scrutiny, in the user's meaning. Credit the personas that pressure-tested the idea by name, icon, and voice. Render a prominent wax-seal-style or stamped outcome mark, matched to the result: `HARDENED`, an `Idea Death Certificate` stamped `KILLED` with the cause of death, or `CLARIFIED`. Tell the user the path.
 
-> Adapted from bmad-method, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.
