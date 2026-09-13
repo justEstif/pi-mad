@@ -1,3 +1,4 @@
 skills/@*
 skills/.DS_Store
 node_modules/
+.shelf-disabled

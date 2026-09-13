@@ -2,13 +2,14 @@
  * browser — the /shelf TUI. A command palette over the catalog.
  *
  * Type to search (matches name + description), ↑↓ to move, enter loads the
- * selected skill (sends /skill:name and closes), esc clears the query first
- * and closes on second press. Darkness is enforced at startup by shelf.ts;
- * loading is always a human act — enter is that act.
+ * selected skill (sends /skill:name and closes), `d` disables/enables the
+ * selected skill (hidden from search and suggestions; kept on disk), esc clears
+ * the query first and closes on second press. Darkness is enforced at startup
+ * by shelf.ts; loading is always a human act — enter is that act.
  */
 
 import { Key, matchesKey, truncateToWidth } from "@earendil-works/pi-tui";
-import { listSkills, search, type SkillEntry } from "./catalog";
+import { listSkills, search, setDisabled, type SkillEntry } from "./catalog";
 
 const ROWS = 14;
 
@@ -32,7 +33,7 @@ export async function openBrowser(
 		let query = initialQuery.trim();
 		let sel = 0;
 
-		const filtered = (): SkillEntry[] => search(query);
+		const filtered = (): SkillEntry[] => search(query, { includeDisabled: true });
 
 		return {
 			render: (w: number) => {
@@ -55,9 +56,10 @@ export async function openBrowser(
 					const skill = view[i];
 					const idx = start + i;
 					const prefix = idx === sel ? "❯ " : "  ";
-					const label = `${prefix}${skill.name}`;
+					const disabledMark = skill.disabled ? " (disabled)" : "";
+					const label = `${prefix}${skill.name}${disabledMark}`;
 					const desc = skill.description ? `  ${ellipsize(skill.description, 90)}` : "";
-					const raw = idx === sel ? theme.fg("accent", label) : label;
+					const raw = idx === sel ? theme.fg("accent", label) : skill.disabled ? theme.fg("dim", label) : label;
 					lines.push(truncateToWidth(`${raw}${theme.fg("muted", desc)}`, w));
 					// The selected row shows its full description — that's the row
 					// being decided on, and near-twin names differ past the truncation.
@@ -68,7 +70,8 @@ export async function openBrowser(
 				if (list.length > ROWS) {
 					lines.push(theme.fg("dim", ` ${start + 1}–${Math.min(start + ROWS, list.length)} of ${list.length}`));
 				}
-				lines.push(theme.fg("dim", " enter loads · type to search · ↑↓ move · esc clears/closes"));
+				lines.push(theme.fg("dim", ` ${list.filter((s) => s.disabled).length}/${allSkills.length} disabled`));
+				lines.push(theme.fg("dim", " enter loads · d disable/enable · type to search · ↑↓ move · esc clears/closes"));
 				lines.push(theme.fg("accent", "─".repeat(w)));
 				return lines.map((l) => truncateToWidth(l, w));
 			},
@@ -85,6 +88,14 @@ export async function openBrowser(
 					sel = Math.max(0, sel - 1);
 				} else if (matchesKey(data, Key.down)) {
 					sel = Math.min(list.length - 1, sel + 1);
+				} else if (data === "d") {
+					if (list.length > 0) {
+						const picked = list[sel];
+						setDisabled(picked.name, !picked.disabled);
+						// search() reads the refreshed cache; keep sel on the same row.
+						const fresh = filtered().findIndex((s) => s.name === picked.name);
+						sel = fresh >= 0 ? fresh : Math.min(sel, filtered().length - 1);
+					}
 				} else if (matchesKey(data, Key.enter)) {
 					if (list.length > 0) {
 						const picked = list[sel];

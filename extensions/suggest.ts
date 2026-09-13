@@ -49,11 +49,16 @@ export function registerInputSuggester(
 	let lastFire = 0;
 
 	pi.on("input", (event) => {
+		// Slash commands are deliberate human acts (/skill:…, /shelf …), not
+		// prose to mine for suggestion candidates — matching them double-suggests
+		// the very skill the user just chose.
+		const text = event.text.trimStart();
+		if (text.startsWith("/")) return;
 		const now = Date.now();
 		if (now - lastFire < cooldownMs) return;
 		const words = [
 			...new Set(
-				event.text
+				text
 					.toLowerCase()
 					.split(/[^a-z-]+/)
 					.filter((w) => w.length >= minLen && !STOP.has(w)),

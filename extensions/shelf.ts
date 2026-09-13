@@ -128,7 +128,9 @@ export default function shelfExtension(pi: ExtensionAPI) {
 	// the agent may offer them in one sentence — or say nothing. Never loads.
 	registerInputSuggester(pi, {
 		catalog: () =>
-			listSkills().map((s) => ({ name: s.name, description: s.description })),
+			listSkills()
+				.filter((s) => !s.disabled)
+				.map((s) => ({ name: s.name, description: s.description })),
 	});
 
 	pi.registerCommand("shelf", {
