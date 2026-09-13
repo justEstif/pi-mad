@@ -4,7 +4,16 @@
 
 activation_steps_prepend = []
 activation_steps_append = []
-persistent_facts = []
+persistent_facts = [
+  "Built agents land in pi's agents directory (~/.pi/agent/agents/ for user scope, .pi/agents/ in a project for project scope) — never as content in this repo; the shelf ships skills only.",
+  "Agents are not shelf skills: no disable-model-invocation flag, no shelf catalog entry, no trigger-eval coverage — their quality gate is the leanness bar plus the Analyze lenses.",
+]
 on_complete = ""
-build_standards = []
-evals_required = ""
+build_standards = [
+  "Persona is investment, never cut: voice, communication-style examples, domain framing, and design rationale survive every leanness pass; the bar applies to capability prompts only.",
+  "Every capability prompt states what success looks like and nothing the persona already supplies.",
+  "Skill-internal paths are bare from the agent root; ./ only for same-directory files; project paths in plain language anchored at the project working directory.",
+  "Memory agents ship PERSONA, CREED, BOND seeded and MEMORY empty, with init-sanctum explained for first run; autonomous agents document PULSE behavior.",
+  "The agent passes its own lint gate (scan-scripts, high/critical findings resolved) and satisfies every standard here before handoff.",
+]
+evals_required = "any"
