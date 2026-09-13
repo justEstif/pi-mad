@@ -13,7 +13,7 @@
       "./skills"
     ],
     "extensions": [
-      "./extensions"
+      "./extensions/shelf.ts"
     ]
   },
   "devDependencies": {
