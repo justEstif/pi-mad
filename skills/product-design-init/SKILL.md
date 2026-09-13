@@ -3,6 +3,7 @@ name: product-design-init
 description: "Scaffolds a repo-local product-design skill with a 5-mode request router (Shape, Implement, Review, Copy, Harden), an operating contract, routed references, shipped-PR exemplars, and eval placeholders into the current repository. Use when setting up design standards for a repo so agents learn why patterns exist, not just what shipped. Interviews the user first, then writes .agents/skills/product-design/ files; ships structure only and never invents standards content."
 metadata:
   tags: "tool meta"
+disable-model-invocation: true
 ---
 
 # Product Design Init

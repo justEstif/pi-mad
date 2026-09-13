@@ -240,14 +240,21 @@ export default function piMadExtension(pi: ExtensionAPI) {
 						if (list.length > ROWS) {
 							lines.push(theme.fg("dim", ` ${start + 1}–${Math.min(start + ROWS, list.length)} of ${list.length}`));
 						}
-						lines.push(theme.fg("dim", " enter toggle · type to search · ↑↓ move · esc close — restart pi to apply"));
+						lines.push(theme.fg("dim", " enter toggle · a all shown · A none shown · type to search · ↑↓ move · esc close — restart pi to apply"));
 						lines.push(border());
 						return lines.map((l) => truncateToWidth(l, w));
 					},
 					invalidate: () => {},
 					handleInput: (data: string) => {
 						const list = filtered();
-						if (/^[\x20-\x7E]$/.test(data)) {
+						if (data === "a" || data === "A") {
+							// bulk: enable/disable everything shown by the current search
+							for (const s of list) data === "a" ? enabled.add(s) : enabled.delete(s);
+							if (list.length > 0) {
+								setAllowlist(loc, enabled);
+								saved = true;
+							}
+						} else if (/^[\x20-\x7E]$/.test(data)) {
 							query += data;
 							sel = 0;
 						} else if (data === "\x7f") {
@@ -268,6 +275,73 @@ export default function piMadExtension(pi: ExtensionAPI) {
 			});
 
 			ctx.ui.notify(`pi-mad: ${enabled.size}/${allSkills.length} enabled — restart pi to apply`, "info");
+		},
+	});
+
+	// Agent-facing control: lets the model manage the allowlist when the user asks
+	// ("enable the review skills"). Same engine as the /pi-mad browser.
+	pi.registerTool({
+		name: "pi_mad_skills",
+		label: "pi-mad skills",
+		description:
+			"List or change which pi-mad skills load at pi startup. Actions: list, enable, disable, " +
+			"enable-all, disable-all. Skills are OFF by default; changes apply on the next pi start. " +
+			"Use when the user asks to enable, disable, or list pi-mad skills.",
+		parameters: {
+			type: "object",
+			properties: {
+				action: {
+					type: "string",
+					enum: ["list", "enable", "disable", "enable-all", "disable-all"],
+					description: "What to do",
+				},
+				skills: {
+					type: "array",
+					items: { type: "string" },
+					description: "Skill names (required for enable/disable; see list action for valid names)",
+				},
+			},
+			required: ["action"],
+		},
+		execute: async (_toolCallId, params) => {
+			const loc = locate();
+			let text: string;
+			if (!loc) {
+				text = "pi-mad package entry not found in settings — is the package installed?";
+			} else {
+				const all = listSkills();
+				const enabled = new Set(all.filter((s) => isEnabled(loc.entry, s)));
+				const state = () =>
+					all.map((s) => `${enabled.has(s) ? "✓" : "✗"} ${s} [${tagsFor(s).join(", ") || "—"}]`).join("\n");
+				switch (params.action) {
+					case "list":
+						text = `${enabled.size}/${all.length} enabled:\n${state()}`;
+						break;
+					case "enable-all":
+						clearFilter(loc);
+						text = `All ${all.length} pi-mad skills enabled.`;
+						break;
+					case "disable-all":
+						setAllowlist(loc, new Set());
+						text = `All ${all.length} pi-mad skills disabled.`;
+						break;
+					case "enable":
+					case "disable": {
+						const names = params.skills ?? [];
+						const unknown = names.filter((n) => !all.includes(n));
+						if (names.length === 0 || unknown.length > 0) {
+							text = `Unknown or missing skills: ${unknown.join(", ") || "(none given)"}. Valid: ${all.join(", ")}`;
+							break;
+						}
+						for (const n of names) params.action === "enable" ? enabled.add(n) : enabled.delete(n);
+						setAllowlist(loc, enabled);
+						text = `${params.action === "enable" ? "Enabled" : "Disabled"}: ${names.join(", ")}. ${enabled.size}/${all.length} now enabled.`;
+						break;
+					}
+				}
+				text += "\nApplies on the next pi start.";
+			}
+			return { content: [{ type: "text", text }], details: {} };
 		},
 	});
 }

@@ -37,11 +37,15 @@ Every port follows this exactly. Read the source SKILL.md fully before writing a
 Last line of every SKILL.md:
 `> Adapted from <source repo name>, MIT © BMad Code, LLC. Not affiliated with or endorsed by BMad Code.`
 
-## 5. Tag it
+## 5. Tag it & flag it
 Every skill carries `metadata.tags` (space-separated string, first tag = kind):
 `agent` (facilitated persona session) · `workflow` (procedural play) · `tool` (utility/generator),
 plus a domain tag (`planning`, `build`, `review`, `research`, `creative`, `meta`).
 Example: `metadata:\n  tags: "workflow review"`
+
+Side-effecty skills (scaffold, generate, or modify files) also get
+`disable-model-invocation: true` — loaded and explicitly invocable via
+`/skill:name`, but never auto-invoked by the model.
 
 ## 6. Validate
 `/home/estifanos/.agents/skills/skill-creator/scripts/validate-skill <dir>`

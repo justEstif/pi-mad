@@ -19,7 +19,15 @@ Update: `pi update --extensions` (or `pi update --all`).
 /pi-mad coach        # same browser, pre-filtered to the coach skills
 ```
 
-There are no subcommands — the optional argument is just a search seed. Enabling a skill adds `skills/<name>/**` to the package entry's `skills` allowlist in settings; disabling removes it; an empty list loads none. New skills from package updates stay OFF until you enable them. First run migrates older exclusion-filter setups automatically. Toggles apply on next pi start.
+There are no subcommands — the optional argument is just a search seed. **`a` enables everything shown by the current search, `A` disables it** (empty search = all 30). Enabling a skill adds `skills/<name>/**` to the package entry's `skills` allowlist in settings; disabling removes it; an empty list loads none. New skills from package updates stay OFF until you enable them. First run migrates older exclusion-filter setups automatically. Toggles apply on next pi start.
+
+### Agent control
+
+The package registers a `pi_mad_skills` tool, so you can also just ask your agent — "enable the review skills", "disable everything", "list pi-mad skills" — and it drives the same allowlist. Same rule: applies on next pi start.
+
+### Manual-only skills
+
+Four meta-tools ship with `disable-model-invocation: true` (agent-builder, workflow-builder, skill-evals, product-design-init): they are loaded and explicitly invocable (`/skill:name`), but the agent will never auto-run them, since they scaffold and modify files. Flip the flag in a skill's `SKILL.md` if you disagree — note `pi update` restores shipped flags.
 
 Pi's native `pi config` TUI does the same across all packages (Tab switches global/project scope) if you prefer it.
 

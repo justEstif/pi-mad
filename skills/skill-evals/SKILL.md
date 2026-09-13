@@ -3,6 +3,7 @@ name: skill-evals
 description: "Evaluate a skill four ways — baseline versus bare model, section-stripping variant comparison, rubric quality grading, and trigger firing — then optimize its description or drive bounded self-improvement from the results. Use when the user wants to evaluate a skill, run evals, benchmark a skill, validate triggers, optimize a description, or grade skill outputs."
 metadata:
   tags: "tool meta"
+disable-model-invocation: true
 ---
 
 # Skill Eval Runner
