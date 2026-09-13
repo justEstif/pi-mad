@@ -1,8 +1,7 @@
 ---
 name: build-loop
 description: 'Turn a delegated feature request, issue, or bug fix into working, reviewed code through clarify → spec → plan → implement → adversarial review, with a hard definition of ready. Use when the user delegates implementation work; a bare issue link counts. Skip obvious mechanical maintenance such as typo-only, formatting-only, ignore-file, or configuration-hygiene edits. Do not volunteer for user-directed interactive edits or version-control operations that only record existing work.'
-metadata:
-  tags: "workflow build"
+disable-model-invocation: true
 ---
 
 # Build Loop

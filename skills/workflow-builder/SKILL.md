@@ -1,8 +1,6 @@
 ---
 name: "workflow-builder"
 description: "Builds, edits, and analyzes skills and workflows through conversational discovery. Use when the user wants to create a new skill from a rough idea, modify or reshape an existing skill, or run a quality analysis that scores a skill with review lenses and produces an actionable report. Turns a half-formed idea into a lean, outcome-driven skill through a goal-driven build loop."
-metadata:
-  tags: "tool meta"
 disable-model-invocation: true
 ---
 

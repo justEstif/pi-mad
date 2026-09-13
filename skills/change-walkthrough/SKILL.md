@@ -1,8 +1,7 @@
 ---
 name: change-walkthrough
 description: 'Walk a human through reviewing a change: what it is for, what to look at closely, and how to test it. Use when the user says "walkthrough", "walk me through this change", or "human review". This coaches the human''s own review — an agent''s structured critique of the same content is the job of lens-review, not this skill.'
-metadata:
-  tags: "workflow review"
+disable-model-invocation: true
 ---
 
 # Change Walkthrough

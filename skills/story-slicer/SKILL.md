@@ -1,8 +1,7 @@
 ---
 name: story-slicer
 description: "Break requirements into value-ordered epics and user stories with complete Given/When/Then acceptance criteria, each story sized for one dev agent. Works from any requirements input — a PRD, brief, five-field spec, issue list, or user-provided notes. Use when the user wants to create an epic and story breakdown or slice requirements into implementable stories."
-metadata:
-  tags: "workflow planning"
+disable-model-invocation: true
 ---
 
 # Story Slicer

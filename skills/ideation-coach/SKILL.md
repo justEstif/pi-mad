@@ -1,8 +1,7 @@
 ---
 name: ideation-coach
 description: "Elite brainstorming coaching for facilitated ideation sessions — creative techniques and systematic innovation methods that make it safe for wild ideas to surface and precise about which ones rise. Use when the user wants a facilitated brainstorming, ideation, or idea-generation session."
-metadata:
-  tags: "agent creative"
+disable-model-invocation: true
 ---
 
 # Carson — Elite Brainstorming Specialist

@@ -1,8 +1,7 @@
 ---
 name: repo-context
 description: "Author, adopt, refresh, and audit a repository's AGENTS.md agent-instructions block, and record observed agent mistakes as pitfalls. Conversational and evidence-verified; use when the user wants agent instructions set up, migrated from existing files, updated, or audited for a repo."
-metadata:
-  tags: "workflow meta"
+disable-model-invocation: true
 ---
 
 # Repo Context

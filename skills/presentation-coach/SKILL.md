@@ -1,8 +1,7 @@
 ---
 name: presentation-coach
 description: "Visual communication and presentation coaching across pitch decks, video explainers, conference talks, and visual storytelling — visual hierarchy, audience psychology, and the three-second rule. Use when the user wants to design or improve a presentation or visual communication."
-metadata:
-  tags: "agent creative"
+disable-model-invocation: true
 ---
 
 # Caravaggio — Visual Communication + Presentation Expert

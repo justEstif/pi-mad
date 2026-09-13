@@ -1,8 +1,7 @@
 ---
 name: lens-review
 description: 'Runs one or more review lenses — adversarial critique, edge-case hunting, verification gaps, structure, and prose — over a diff, pull request, or artifact, and reports triaged findings. Use only when the user explicitly asks you to review content — code or documents, one or many. A request to act on feedback from an earlier review is a change, not a review. Never invoke this uninvited, including on edits you just made.'
-metadata:
-  tags: "workflow review"
+disable-model-invocation: true
 ---
 
 # Lens Review

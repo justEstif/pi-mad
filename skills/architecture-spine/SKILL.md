@@ -1,8 +1,7 @@
 ---
 name: architecture-spine
 description: "Work out and record the architecture decisions that keep separately built parts of a system consistent, in a short architecture spine. Creates, updates, or validates one via a coaching path or a fast draft; works from a spec, a raw idea, or an existing codebase. Use when the user wants to create the technical architecture, draft an architecture spine or solution design, or validate one."
-metadata:
-  tags: "workflow planning"
+disable-model-invocation: true
 ---
 
 # Architecture Spine

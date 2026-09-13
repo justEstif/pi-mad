@@ -1,8 +1,7 @@
 ---
 name: spec-distiller
 description: "Distill any input — an idea, brief, PRD, transcript, or mixed notes — into a short SPEC.md carrying a five-field kernel (Why, Capabilities, Constraints, Non-goals, Success signal), with update and validate modes and an optional story-break. Use when the user wants to create a spec, distill something into a spec, update or validate a spec, or break a spec into stories."
-metadata:
-  tags: "workflow planning"
+disable-model-invocation: true
 ---
 
 # Spec Distiller

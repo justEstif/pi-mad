@@ -1,8 +1,7 @@
 ---
 name: "product-brief-coach"
 description: "Coach a user through creating, updating, or validating a product brief drawn out through real conversation. Use when the user wants to shape a raw idea into an honest, right-sized brief, evolve an existing brief against a change signal, or pressure-test one before it feeds a PRD. Right-sizes rigor to stakes, tags assumptions explicitly, and keeps overflow depth in an addendum."
-metadata:
-  tags: "agent planning"
+disable-model-invocation: true
 ---
 
 # Product Brief Coach Protocol

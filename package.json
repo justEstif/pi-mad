@@ -1,7 +1,7 @@
 {
-  "name": "pi-mad",
+  "name": "pi-shelf",
   "version": "0.1.0",
-  "description": "Curated BMAD-derived skills for pi \u2014 framework machinery stripped, content kept",
+  "description": "Personal curated skill shelf for pi — all-dark, searchable, behavior-gated",
   "license": "MIT",
   "author": "justEstif",
   "repository": "github:justEstif/pi-mad",

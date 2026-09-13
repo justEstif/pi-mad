@@ -1,8 +1,7 @@
 ---
 name: retrospective
 description: 'Run an evidence-based retrospective on a completed body of work — a feature, milestone, or agent dev loop: gather the record it left (diffs, commits, docs, session notes), surface the cross-cutting defects no single step shows, and produce sourced findings, action items, and an acceptance verdict. Use when the user says "run a retrospective" or asks to retro completed work.'
-metadata:
-  tags: "workflow review"
+disable-model-invocation: true
 ---
 
 # Retrospective

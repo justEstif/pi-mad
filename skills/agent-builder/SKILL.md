@@ -1,8 +1,6 @@
 ---
 name: "agent-builder"
 description: "Builds, edits, or analyzes agent skills through conversational discovery. Use when the user wants to create a new agent with a named persona and focused capabilities, change how an existing agent behaves, or run a quality analysis that scores an agent with review lenses and produces an actionable report. Produces stateless, memory, or autonomous agents along one design gradient."
-metadata:
-  tags: "tool meta"
 disable-model-invocation: true
 ---
 
