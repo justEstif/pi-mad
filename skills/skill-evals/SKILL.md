@@ -1,6 +1,6 @@
 ---
 name: skill-evals
-description: "Author, audit, and evaluate agent skills. Authoring half: agentskills.io spec validation, quality-rubric grading, description-drift detection, and numbered improvements applied with approval. Eval half: baseline versus bare model, section-stripping variant comparison, and trigger firing, with bounded self-improvement from results. Use when the user wants to create, audit, fix, or grade a skill ('skillify this', 'audit all skills', 'grade report'), or run evals, benchmark a skill, validate triggers, or optimize a description.",
+description: "Author, audit, and evaluate agent skills. Authoring half: agentskills.io spec validation, quality-rubric grading, description-drift detection, and numbered improvements applied with approval. Eval half: baseline versus bare model, section-stripping variant comparison, and trigger firing, with bounded self-improvement from results. Use when the user wants to create, audit, fix, or grade a skill ('skillify this', 'audit all skills', 'grade report'), or run evals, benchmark a skill, validate triggers, or optimize a description."
 disable-model-invocation: true
 ---
 
