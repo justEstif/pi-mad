@@ -18,6 +18,7 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 import { listSkills, parseFrontmatter, search } from "./catalog";
 import { openBrowser } from "./browser";
+import { registerInputSuggester } from "./lib/gates";
 
 const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SKILLS_DIR = path.join(PACKAGE_ROOT, "skills");
@@ -66,6 +67,15 @@ function enforceAll(): number {
 
 export default function shelfExtension(pi: ExtensionAPI) {
 	enforceAll();
+	// Optional discovery: when the user's message matches shelf skills, mention
+	// them to the model as suggestions (never loads, never blocks, rate-limited).
+	registerInputSuggester(pi, {
+		catalog: () =>
+			listSkills().map((s) => ({ name: s.name, description: s.description })),
+		threshold: 1,
+		limit: 3,
+		cooldownMs: 5 * 60_000,
+	});
 
 	pi.registerCommand("shelf", {
 		description: "Browse and search the pi-shelf skill catalog",
