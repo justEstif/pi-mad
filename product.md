@@ -17,7 +17,7 @@ One person: the author. **[A1: audience-of-one; distribution is dead.** Conseque
 3. **Agent discovery** — a `pi_shelf_search` tool lets the agent answer "does the shelf have a skill for X?" from name + description only: suggest, never load. This is the necessary custom piece; pi has no native equivalent.
 4. **Pleasant browsing** — the `/shelf` command: search + toggle UI over the catalog, matching description text (no tag system — tags were killed as a maintenance surface).
 5. **Flag enforcement** — `pi update` restores shipped SKILL.md files, so the extension re-applies `disable-model-invocation` at startup. The shelf defends its own darkness.
-6. **Behavior-triggered loading** — absorbs the gate library (`extensions/lib/gates.ts` from dotfiles): bash-command pattern → block + queue skill load ("you're about to `git push`; the git-workflow skill is mandatory first"). Pull (search) and push (gates) complete the delivery system. Per-machine gate *registrations* remain machine config.
+6. **Quiet suggestions** — an input suggester watches user messages; on a strong match it lets the agent offer candidate skills in one sentence, with explicit permission to stay silent. Never loads. (Command-level gates — blocking bash patterns until a skill is loaded — are machine-side policy and live in dotfiles, not here.)
 
 ## Hard rules (locked)
 
@@ -46,8 +46,8 @@ pi-shelf/
   extensions/
     shelf.ts          # entry: /shelf command + pi_shelf_search tool + flag enforcer
     catalog.ts        # frontmatter reading, search index, flag repair
-    browser.ts        # /shelf TUI
-    lib/gates.ts      # reusable bash-gate + skill-load-tracker library
+    browser.ts        # /shelf command palette
+    suggest.ts        # quiet input suggester
   skills/             # 31 skills, all-dark, tagless
   tools/              # validate_skills.py (vendored)
   README.md (identity + install + pointer) · PORTING.md · AUDIT.md · LICENSE
@@ -56,7 +56,7 @@ pi-shelf/
 ## Assumptions register
 
 - **[A1]** Audience-of-one; distribution dead. — basis for half the hard rules; first thing to revisit if the repo goes public-facing.
-- **[A2]** The gates pattern generalizes beyond git-workflow. — only two consumers exist today; if it stays single-use, the lib can move back to dotfiles.
+- **[A2]** ~~The gates pattern generalizes beyond git-workflow.~~ Resolved: gates are machine-side command policy and moved back to dotfiles; the shelf keeps only its input suggester.
 - **[A3]** All-dark + search is a better experience than filtered auto-loading. — unproven until lived with for a few weeks; the settings-filter design exists in git history if this fails.
 - **[A4]** Merge-first won't dilute the coaches — merging assumes the CSV methodology is the skeleton and incoming content is a mode. If modes feel bolted on, split back out.
 

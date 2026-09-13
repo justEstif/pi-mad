@@ -5,10 +5,11 @@
  * 1. Darkness enforcement: every skills/<name>/SKILL.md must carry
  *    `disable-model-invocation: true`. `pi update` restores shipped files, so
  *    this repairs the flag at every startup — writing only when something changed.
- * 2. /shelf — browse and search the catalog (read-only; see browser.ts).
- * 3. pi_shelf_search — let the agent answer "does the shelf have a skill for X?"
- *    from name + description only. It never loads a skill; skills are invoked
- *    by name (`/skill:name`) by a human.
+ * 2. /shelf — browse, search, and load (a command palette; see browser.ts).
+ * 3. pi_shelf_search + the input suggester — let the agent answer "does the
+ *    shelf have a skill for X?" and quietly offer candidates. Nothing loads
+ *    without a human: skills are invoked by name (`/skill:name`), by hand or
+ *    via enter in the browser.
  */
 
 import * as fs from "node:fs";
@@ -18,7 +19,7 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 import { invalidate, listSkills, parseFrontmatter, search } from "./catalog";
 import { openBrowser } from "./browser";
-import { registerInputSuggester } from "./lib/gates";
+import { registerInputSuggester } from "./suggest";
 
 const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SKILLS_DIR = path.join(PACKAGE_ROOT, "skills");
@@ -27,19 +28,21 @@ const DARK_KEY = "disable-model-invocation";
 /**
  * Re-apply `disable-model-invocation: true` to one SKILL.md.
  * Replaces an existing (false/other) value in place, or appends the key
- * before the closing `---`. Returns true when the file was rewritten.
+ * before the closing `---`. Returns "rewritten" when the file changed,
+ * "broken" when the frontmatter is unparseable (flag still appended).
  */
-function enforceDarkness(file: string): boolean {
+function enforceDarkness(file: string): "clean" | "rewritten" | "broken" {
 	const original = fs.readFileSync(file, "utf8");
 	const parts = original.split(/^---\n/m);
-	if (parts.length < 3) return false;
+	if (parts.length < 3) return "broken";
 
 	let fmText = parts[1];
+	let broken = false;
 	try {
 		const fm = parseFrontmatter(original);
-		if (fm?.[DARK_KEY] === true) return false; // already dark
+		if (fm?.[DARK_KEY] === true) return "clean"; // already dark
 	} catch {
-		/* unparseable frontmatter: still append the key */
+		broken = true; // unparseable frontmatter: still append the key
 	}
 
 	if (new RegExp(`^${DARK_KEY}:`, "m").test(fmText)) {
@@ -50,42 +53,57 @@ function enforceDarkness(file: string): boolean {
 	}
 	parts[1] = fmText;
 	fs.writeFileSync(file, parts.join("---\n"));
-	return true;
+	return broken ? "broken" : "rewritten";
 }
 
-/** Enforce darkness across the whole shelf. Returns the number of files rewritten. */
-function enforceAll(): number {
-	if (!fs.existsSync(SKILLS_DIR)) return 0;
-	let fixed = 0;
+/** Enforce darkness across the whole shelf. Returns the broken file names. */
+function enforceAll(): string[] {
+	if (!fs.existsSync(SKILLS_DIR)) return [];
+	const broken: string[] = [];
 	for (const d of fs.readdirSync(SKILLS_DIR, { withFileTypes: true })) {
 		if (!d.isDirectory()) continue;
 		const file = path.join(SKILLS_DIR, d.name, "SKILL.md");
-		if (fs.existsSync(file) && enforceDarkness(file)) fixed++;
+		if (!fs.existsSync(file)) continue;
+		if (enforceDarkness(file) === "broken") broken.push(d.name);
 	}
-	return fixed;
+	return broken;
 }
 
 export default function shelfExtension(pi: ExtensionAPI) {
-	enforceAll();
+	const broken = enforceAll();
 	invalidate(); // enforcer may have rewritten SKILL.md files; drop any stale snapshot
-	// Optional discovery: when the user's message matches shelf skills, mention
-	// them to the model as suggestions (never loads, never blocks, rate-limited).
+
+	// Malformed frontmatter is otherwise silent (empty description, maybe undark)
+	// — tell the human once per session which files need fixing.
+	if (broken.length > 0) {
+		pi.on("session_start", (_event, ctx) => {
+			ctx.ui.notify(
+				`pi-shelf: unparseable frontmatter in ${broken.join(", ")} — run \`bun tools/validate_skills.ts skills/\` to diagnose`,
+				"warning",
+			);
+		});
+	}
+
+	// Quiet discovery: when the user's message strongly matches shelf skills,
+	// the agent may offer them in one sentence — or say nothing. Never loads.
 	registerInputSuggester(pi, {
 		catalog: () =>
 			listSkills().map((s) => ({ name: s.name, description: s.description })),
-		threshold: 1,
-		limit: 3,
-		cooldownMs: 5 * 60_000,
 	});
 
 	pi.registerCommand("shelf", {
-		description: "Browse and search the pi-shelf skill catalog",
+		description: "Browse, search, and load pi-shelf skills",
 		getArgumentCompletions: (prefix) =>
 			listSkills()
 				.filter((s) => s.name.startsWith(prefix.trim()))
 				.map((s) => ({ value: s.name, label: s.name })),
 		handler: async (args, ctx) => {
-			await openBrowser(ctx.ui.custom, args);
+			await openBrowser(ctx.ui.custom, args, (skill) => {
+				// Enter is the human act: expand /skill:<name> as if typed.
+				pi.sendUserMessage(`/skill:${skill.name}`, {
+					expandPromptTemplates: true,
+				});
+			});
 		},
 	});
 
