@@ -4,9 +4,19 @@
 
 activation_steps_prepend = []
 activation_steps_append = []
-persistent_facts = []
+persistent_facts = [
+  "Built skills land in this repo's skills/ directory and must follow shelf conventions (see build_standards).",
+  "Conformance gate: bun tools/validate_skills.ts <skill-dir> (repo root) must exit 0.",
+  "Eval harness: evals/ at the repo root — trigger cases are plain TS fixture files; run with PI_PROVIDER/PI_MODEL set via `npx vitest run evals/trigger.eval.ts`.",
+]
 on_complete = ""
-build_standards = []
-evals_required = ""
+build_standards = [
+  "Frontmatter: name = directory name, lowercase-hyphens; description <= 1024 chars, opens with its differentiator vs cluster siblings, keeps 'Use when' trigger and near-miss skip clauses.",
+  "disable-model-invocation: true — every shelf skill is dark; nothing ships auto-invocable.",
+  "No metadata blocks or tag taxonomies; search matches descriptions.",
+  "agentskills.io conformant; never templated at load time; knap only for generation-time output inside the skill.",
+  "Merge-first: before creating a new directory, check whether an existing skill should absorb this as a mode instead.",
+]
+evals_required = "any"
 skill_md_token_desired = 2000
 skill_md_token_budget = 3000
