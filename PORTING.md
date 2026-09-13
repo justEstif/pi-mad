@@ -1,9 +1,11 @@
-# Porting recipe: upstream BMAD skill → pi-mad skill
+> **Note:** this repo was renamed **pi-mad → pi-shelf**; the recipe below is the historical record of how the BMAD ports were done, and its BMAD attribution is historical.
+
+# Porting recipe: upstream BMAD skill → pi-shelf skill
 
 Every port follows this exactly. Read the source SKILL.md fully before writing anything.
 
 ## 1. Naming
-- Target dir: `/tmp/pi-mad/skills/<new-name>/` (mapping given in your task).
+- Target dir: `/tmp/pi-shelf/skills/<new-name>/` (mapping given in your task).
 - Frontmatter `name` = `<new-name>`. Never keep `bmad` in names.
 - description: keep the original WHAT/WHEN, reworded to ≤500 chars, quoted YAML
   string (no `>` scalars, no unquoted colons). Remove invocation quirks like

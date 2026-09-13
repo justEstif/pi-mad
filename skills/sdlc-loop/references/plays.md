@@ -1,6 +1,6 @@
-# The six plays, adapted to pi + pi-mad
+# The six plays, adapted to pi + pi-shelf
 
-Per-stage detail behind the `sdlc-loop` conductor: what changes, getting started, concrete steps, governance, and how to measure. Adapted from Anthropic's AI-native SDLC playbook to pi and the pi-mad skill set.
+Per-stage detail behind the `sdlc-loop` conductor: what changes, getting started, concrete steps, governance, and how to measure. Adapted from Anthropic's AI-native SDLC playbook to pi and the pi-shelf skill set.
 
 Shared mechanics first — they apply to every play:
 
@@ -52,7 +52,7 @@ Requirements and design collapse into one pass. Policy is applied while the spec
 
 ### Getting started
 
-- Prerequisites: an accepted `intent.md`; policies that matter written as skills (pi-mad ships review and spec skills; organization-specific policy belongs in project skills).
+- Prerequisites: an accepted `intent.md`; policies that matter written as skills (pi-shelf ships review and spec skills; organization-specific policy belongs in project skills).
 - Infrastructure: the product owner needs no engineering skill — only the loop and the skills loaded.
 
 ### Concrete steps
@@ -129,7 +129,7 @@ Every stage checks its own work before a human sees it, and review runs in both 
 
 Separation of duties: the agent that wrote the code has no way to approve it. Approval is a human decision informed by the findings; the PR thread — findings, fixes, approvals — is the audit record. Repeat mistakes flagged twice become a convention (AGENTS.md/CLAUDE.md or a skill) as part of the review, so the same class is caught from the next change onward.
 
-Continuous evals are the AI-native stage-gate QA: the agent's own configuration (conventions files, skills) gets regression-tested like code. pi-mad ships `skill-evals` for exactly this; every incident also adds an eval (see Stage 6).
+Continuous evals are the AI-native stage-gate QA: the agent's own configuration (conventions files, skills) gets regression-tested like code. pi-shelf ships `skill-evals` for exactly this; every incident also adds an eval (see Stage 6).
 
 ### Measurement
 

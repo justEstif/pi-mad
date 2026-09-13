@@ -1,4 +1,4 @@
-# BMAD → pi-mad Migration Audit
+# BMAD → pi-shelf Migration Audit
 
 Full audit of every not-yet-ported BMAD skill. Sources: `/tmp/bmad-method/skills/` (27), `bmad-cis/src/skills/` workshop suites (4), `bmad-builder/skills/` (3) + samples note, `web-bundles/` (verification only).
 
