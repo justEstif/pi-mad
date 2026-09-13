@@ -1,17 +1,20 @@
 /**
- * /pi-mad — enable/disable pi-mad skills from inside the session.
+ * /pi-mad — choose which pi-mad skills load. One command, no subcommands.
  *
- * Usage:
- *   /pi-mad                    interactive toggle browser (changes save immediately)
- *   /pi-mad list               show enabled/disabled state
- *   /pi-mad on <skill...>      enable skills
- *   /pi-mad off <skill...>     disable skills
- *   /pi-mad reset              enable all (drop filters)
+ * Opens a checkbox browser: type to search (matches names AND tags), ↑↓ to
+ * move, enter toggles the highlighted skill and saves immediately, esc closes.
+ * An optional argument pre-fills the search — `/pi-mad coach` opens filtered
+ * to the coach skills, `/pi-mad review` to the review family.
  *
- * Writes the pi-mad entry in your settings (`~/.pi/agent/settings.json`, or a
- * project `.pi/settings.json` if the package entry lives there) using the
- * package object form's exclusion filters — e.g. { skills: ["!prd-coach"] } —
- * so `pi update` and manual edits stay compatible. Restart pi to apply.
+ * Model: ALLOWLIST. All pi-mad skills are OFF by default; enabling a skill
+ * adds `skills/<name>/**` to the package entry's `skills` filter in settings
+ * (`~/.pi/agent/settings.json`, or a project `.pi/settings.json` if the entry
+ * lives there). Empty array = none load; no `skills` key = all load.
+ * New skills from package updates therefore stay OFF until enabled.
+ *
+ * First run: a one-time migration turns a fresh entry into `[]` (default-off)
+ * and converts legacy `!skill` exclusion filters into an equivalent allowlist.
+ * Changes apply on the next pi start (skills load at startup).
  */
 
 import * as fs from "node:fs";
@@ -19,17 +22,18 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { Container, DynamicBorder, type SelectItem, SelectList, Text } from "@earendil-works/pi-tui";
+import { Key, matchesKey, truncateToWidth } from "@earendil-works/pi-tui";
 
 const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SKILLS_DIR = path.join(PACKAGE_ROOT, "skills");
 const MARKER = "pi-mad";
+const ROWS = 14;
 
 interface SettingsLocation {
 	file: string;
 	scope: "global" | "project";
 	settings: any;
-	entry: any; // the packages[] element for this package (string index kept separately)
+	entry: any; // the packages[] element for this package
 	index: number;
 }
 
@@ -52,7 +56,7 @@ function isOurEntry(e: any): boolean {
 }
 
 /** Find the settings file whose packages[] contains this package. Global first, then project. */
-function locate(): SettingsLocation | null {
+export function locate(): SettingsLocation | null {
 	const candidates: Array<{ file: string; scope: "global" | "project" }> = [
 		{ file: path.join(os.homedir(), ".pi", "agent", "settings.json"), scope: "global" },
 	];
@@ -71,7 +75,7 @@ function locate(): SettingsLocation | null {
 	return null;
 }
 
-function listSkills(): string[] {
+export function listSkills(): string[] {
 	if (!fs.existsSync(SKILLS_DIR)) return [];
 	return fs
 		.readdirSync(SKILLS_DIR, { withFileTypes: true })
@@ -95,10 +99,6 @@ function tagsFor(skill: string): string[] {
 	return tags;
 }
 
-function skillsWithTag(tag: string): string[] {
-	return listSkills().filter((s) => tagsFor(s).includes(tag));
-}
-
 function extractFrontmatter(file: string): { fm: any } {
 	const text = fs.readFileSync(file, "utf8");
 	const parts = text.split(/^---\n/m);
@@ -106,212 +106,168 @@ function extractFrontmatter(file: string): { fm: any } {
 	return { fm: Bun.YAML.parse(parts[1]) };
 }
 
-function globToRegex(pattern: string): RegExp {
-	const escaped = pattern
-		.replace(/[.+^${}()|[\]\\]/g, "\\$&")
-		.replace(/\*\*/g, "\0")
-		.replace(/\*/g, "[^/]*")
-		.replace(/\0/g, ".*")
-		.replace(/\?/g, "[^/]");
-	return new RegExp(`^${escaped}$`);
-}
-
-/** Exclusion filters (`!pattern` / `-exact`) inside the entry's skills filter. */
-function exclusions(entry: any): string[] {
-	if (typeof entry === "string" || !Array.isArray(entry?.skills)) return [];
-	return entry.skills.filter((f: string) => typeof f === "string" && /^[!-]/.test(f));
-}
-
-function isEnabled(entry: any, skill: string): boolean {
+/** Legacy v1 filters: `!glob` / `-exact` negations. Used only by the one-time migration. */
+function legacyExcludes(entry: any, skill: string): boolean {
+	if (typeof entry === "string" || !Array.isArray(entry?.skills)) return false;
 	const rel = `skills/${skill}`;
-	return !exclusions(entry).some((p) => {
-		const pattern = p.slice(1); // strip ! or -
-		return p.startsWith("-") ? pattern === rel : globToRegex(pattern).test(rel);
+	return entry.skills.some((f: string) => {
+		if (typeof f !== "string" || !/^[!-]/.test(f)) return false;
+		const pattern = f.slice(1);
+		const regex = new RegExp(
+			`^${pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*\*/g, "\0").replace(/\*/g, "[^/]*").replace(/\0/g, ".*")}$`,
+		);
+		return f.startsWith("-") ? pattern === rel : regex.test(rel);
 	});
 }
 
-/** Ensure object form, then apply exclusions = exactly the given set. Empty set -> key removed (load all). */
-function setEnabled(loc: SettingsLocation, enabledSet: Set<string>, allSkills: string[]): void {
+/** A skill loads iff there is no skills filter at all, or its allowlist entry is present. */
+export function isEnabled(entry: any, skill: string): boolean {
+	if (typeof entry === "string" || !Array.isArray(entry?.skills)) return true;
+	return entry.skills.includes(`skills/${skill}/**`);
+}
+
+/** Write the allowlist: one glob per enabled skill. Empty set -> `[]` = none load. */
+export function setAllowlist(loc: SettingsLocation, enabledSet: Set<string>): void {
 	let entry = loc.entry;
 	if (typeof entry === "string") {
 		entry = { source: entry };
 		loc.settings.packages[loc.index] = entry;
 		loc.entry = entry;
 	}
-	const filters: string[] = [];
-	for (const skill of allSkills) {
-		if (!enabledSet.has(skill)) filters.push(`!skills/${skill}`);
-	}
-	// preserve any non-exclusion filters the user added by hand
-	const userFilters = Array.isArray(entry.skills) ? entry.skills.filter((f: string) => !/^[!-]/.test(f)) : [];
-	entry.skills = [...filters, ...userFilters];
-	if (entry.skills.length === 0) delete entry.skills;
+	entry.skills = [...enabledSet].sort().map((s) => `skills/${s}/**`);
 	writeJson(loc.file, loc.settings);
 }
 
+/** All on: remove the skills filter entirely. */
+export function clearFilter(loc: SettingsLocation): void {
+	if (typeof loc.entry === "string") return;
+	if (loc.entry.skills !== undefined) {
+		delete loc.entry.skills;
+		writeJson(loc.file, loc.settings);
+	}
+}
+
+/** One-time migration to default-off + allowlist. Marker file prevents re-running after a manual reset. */
+export function migrateOnce(): void {
+	const loc = locate();
+	if (!loc) return;
+	const marker = path.join(path.dirname(loc.file), ".pi-mad-migrated");
+	if (fs.existsSync(marker)) return;
+	try {
+		const skills = typeof loc.entry === "object" ? loc.entry.skills : undefined;
+		if (!Array.isArray(skills)) {
+			setAllowlist(loc, new Set()); // fresh install -> all OFF
+		} else if (skills.some((f: any) => typeof f === "string" && /^[!-]/.test(f))) {
+			setAllowlist(loc, new Set(listSkills().filter((s) => !legacyExcludes(loc.entry, s)))); // v1 -> allowlist
+		}
+	} finally {
+		fs.writeFileSync(marker, "pi-mad default-off migration applied\n");
+	}
+}
+
 export default function piMadExtension(pi: ExtensionAPI) {
+	migrateOnce();
 	const allSkills = listSkills();
 
-	const applyVerb = (
-		ctx: any,
-		verb: "on" | "off" | "reset",
-		names: string[],
-	): void => {
-		const loc = locate();
-		if (!loc) {
-			ctx.ui.notify("pi-mad package entry not found in global or project settings", "error");
-			return;
-		}
-		const enabled = new Set(allSkills.filter((s) => isEnabled(loc.entry, s)));
-		if (verb === "reset") {
-			names = allSkills;
-		} else {
-			const unknown = names.filter((n) => !allSkills.includes(n));
-			if (unknown.length) {
-				ctx.ui.notify(`unknown skills: ${unknown.join(", ")}`, "error");
-				return;
-			}
-		}
-		for (const n of names) verb === "off" ? enabled.delete(n) : enabled.add(n);
-		setEnabled(loc, enabled, allSkills);
-		ctx.ui.notify(`pi-mad: ${enabled.size}/${allSkills.length} enabled (${loc.scope}) — restart pi to apply`, "info");
-	};
-
 	pi.registerCommand("pi-mad", {
-		description: "Enable/disable pi-mad skills",
-		getArgumentCompletions: (prefix) => {
-			const words = prefix.split(/\s+/).filter(Boolean);
-			const verb = words[0] ?? "";
-			if (prefix.includes("--tag")) {
-				const partial = prefix.split(/--tag\s*/)[1] ?? "";
-				return [...new Set(listSkills().flatMap(tagsFor))]
-					.filter((t) => t.startsWith(partial))
-					.map((t) => ({ value: t, label: `${t} (${skillsWithTag(t).length})` }));
-			}
-			if (verb === "on" || verb === "off") {
-				const partial = words[1] ?? "";
-				return listSkills().filter((s) => s.startsWith(partial)).map((s) => ({ value: s, label: s }));
-			}
-			if (words.length <= 1 && ["list", "reset", "on", "off", "tags"].some((v) => v.startsWith(verb))) {
-				return ["list", "on", "off", "reset", "tags"].map((v) => ({ value: v, label: v }));
-			}
-			return null;
-		},
+		description: "Choose which pi-mad skills load (search + toggle, off by default)",
+		getArgumentCompletions: (prefix) =>
+			listSkills()
+				.filter((s) => s.startsWith(prefix.trim()))
+				.map((s) => ({ value: s, label: s })),
 		handler: async (args, ctx) => {
-			// --tag <tag> scopes on/off/list to a tag family
-			const tagMatch = args.match(/--tag\s+(\S+)/);
-			const tagFilter = tagMatch?.[1];
-			const positional = args.replace(/--tag\s+\S+/g, "").trim();
-			const [verb, ...names] = positional.split(/\s+/).filter(Boolean);
-			const allSkills = listSkills();
-			const allTags = [...new Set(allSkills.flatMap(tagsFor))].sort();
-
-			if (verb === "tags") {
-				const counts = allTags.map((t) => `${t} (${skillsWithTag(t).length})`).join("  ");
-				ctx.ui.notify(`pi-mad tags: ${counts}`, "info");
-				return;
-			}
-
-			if (verb === "on" || verb === "off") {
-				let targets = tagFilter ? skillsWithTag(tagFilter) : [];
-				if (names.length) targets = [...new Set([...targets, ...names])];
-				if (targets.length === 0) {
-					ctx.ui.notify(`Usage: /pi-mad ${verb} <skill...> [--tag <tag>]  ·  tags: ${allTags.join(", ")}`, "error");
-					return;
-				}
-				applyVerb(ctx, verb, targets);
-				return;
-			}
-
-			if (verb === "list") {
-				const loc = locate();
-				if (!loc) {
-					ctx.ui.notify("pi-mad package entry not found in settings", "error");
-					return;
-				}
-				const shown = tagFilter ? skillsWithTag(tagFilter) : allSkills;
-				const lines = shown.map((s) => `${isEnabled(loc.entry, s) ? "✓" : "✗"} ${s}  [${tagsFor(s).join(", ") || "—"}]`);
-				ctx.ui.notify(`${loc.scope}: ${loc.file}\n${lines.join("\n")}`, "info");
-				return;
-			}
-
-			if (verb === "reset") {
-				applyVerb(ctx, "reset", []);
-				return;
-			}
-
-			// Interactive browser
 			const loc = locate();
 			if (!loc) {
 				ctx.ui.notify("pi-mad package entry not found in global or project settings", "error");
 				return;
 			}
-			const browserSkills = tagFilter ? skillsWithTag(tagFilter) : allSkills;
 			const enabled = new Set(allSkills.filter((s) => isEnabled(loc.entry, s)));
-			let dirty = false;
-
-			const items = (): SelectItem[] =>
-				browserSkills.map((s) => ({
-					value: s,
-					label: `${enabled.has(s) ? "✓" : "✗"} ${s}`,
-					description: `${tagsFor(s).join(", ") || "—"} · ${enabled.has(s) ? "enabled" : "disabled"}`,
-				}));
+			let saved = false;
 
 			await ctx.ui.custom<void>((tui, theme, _kb, done) => {
-				let query = "";
-				const container = new Container();
-				container.addChild(new DynamicBorder((s: string) => theme.fg("accent", s)));
-				const header = new Text(theme.fg("accent", theme.bold(`pi-mad skills — ${enabled.size}/${allSkills.length} enabled · ${loc.scope}`)), 1, 0);
-				container.addChild(header);
-				const searchLine = new Text(theme.fg("muted", "search: │"), 1, 0);
-				container.addChild(searchLine);
-				const selectList = new SelectList(items(), Math.min(allSkills.length, 14), {
-					selectedPrefix: (t: string) => theme.fg("accent", t),
-					selectedText: (t: string) => theme.fg("accent", t),
-					description: (t: string) => theme.fg("muted", t),
-					scrollInfo: (t: string) => theme.fg("dim", t),
-					noMatch: (t: string) => theme.fg("warning", t),
-				});
-								selectList.onSelect = (item: SelectItem) => {
-					const name = item.value as string;
+				let query = args.trim();
+				let sel = 0;
+
+				const filtered = () => {
+					const q = query.toLowerCase();
+					if (!q) return allSkills;
+					return allSkills.filter(
+						(s) => s.toLowerCase().includes(q) || tagsFor(s).some((t) => t.toLowerCase().includes(q)),
+					);
+				};
+
+				const toggle = (name: string) => {
 					const nowEnabled = !enabled.has(name);
 					if (nowEnabled) enabled.add(name);
 					else enabled.delete(name);
-					dirty = true;
-					setEnabled(loc, enabled, allSkills);
-					// SelectList stores items by reference — mutate in place and rerender
-					item.label = `${nowEnabled ? "✓" : "✗"} ${name}`;
-					item.description = nowEnabled ? "enabled" : "disabled";
-					header.setText(theme.fg("accent", theme.bold(`pi-mad skills — ${enabled.size}/${allSkills.length} enabled · ${loc.scope} (saved)`)));
-					tui.requestRender();
+					setAllowlist(loc, enabled);
+					saved = true;
 				};
-				selectList.onCancel = () => done();
-				container.addChild(selectList);
-				container.addChild(new Text(theme.fg("dim", "enter toggle (saves) • type to search • ↑↓ navigate • esc close"), 1, 0));
-				container.addChild(new DynamicBorder((s: string) => theme.fg("accent", s)));
-				const updateSearch = () => {
-					searchLine.setText(theme.fg("muted", `search: ${query}│`));
-					selectList.setFilter(query);
-				};
+
+				const border = () => theme.fg("accent", "─".repeat(200));
+
 				return {
-					render: (w: number) => container.render(w),
-					invalidate: () => container.invalidate(),
+					render: (w: number) => {
+						const list = filtered();
+						if (sel >= list.length) sel = Math.max(0, list.length - 1);
+						const start = Math.max(0, Math.min(sel - Math.floor(ROWS / 2), Math.max(0, list.length - ROWS)));
+						const view = list.slice(start, start + ROWS);
+
+						const lines: string[] = [border()];
+						lines.push(
+							theme.fg(
+								"accent",
+								theme.bold(
+									` pi-mad skills — ${enabled.size}/${allSkills.length} enabled · ${loc.scope}${saved ? " · saved" : ""}`,
+								),
+							),
+						);
+						lines.push(theme.fg("muted", ` search: ${query}│`));
+						if (list.length === 0) {
+							lines.push(theme.fg("warning", " no matching skills"));
+						}
+						for (let i = 0; i < view.length; i++) {
+							const name = view[i];
+							const idx = start + i;
+							const check = enabled.has(name) ? "✓" : "✗";
+							const tags = tagsFor(name).join(", ");
+							const prefix = idx === sel ? "❯ " : "  ";
+							const label = `${prefix}${check} ${name}`;
+							const tagText = tags ? theme.fg("muted", `  ${tags}`) : "";
+							const raw = idx === sel ? theme.fg("accent", label) : label;
+							lines.push(truncateToWidth(`${raw}${tagText}`, w));
+						}
+						if (list.length > ROWS) {
+							lines.push(theme.fg("dim", ` ${start + 1}–${Math.min(start + ROWS, list.length)} of ${list.length}`));
+						}
+						lines.push(theme.fg("dim", " enter toggle · type to search · ↑↓ move · esc close — restart pi to apply"));
+						lines.push(border());
+						return lines.map((l) => truncateToWidth(l, w));
+					},
+					invalidate: () => {},
 					handleInput: (data: string) => {
+						const list = filtered();
 						if (/^[\x20-\x7E]$/.test(data)) {
 							query += data;
-							updateSearch();
+							sel = 0;
 						} else if (data === "\x7f") {
 							query = query.slice(0, -1);
-							updateSearch();
-						} else {
-							selectList.handleInput(data);
+							sel = 0;
+						} else if (matchesKey(data, Key.up)) {
+							sel = Math.max(0, sel - 1);
+						} else if (matchesKey(data, Key.down)) {
+							sel = Math.min(list.length - 1, sel + 1);
+						} else if (matchesKey(data, Key.enter)) {
+							if (list.length > 0) toggle(list[sel]);
+						} else if (matchesKey(data, Key.escape) || data === "\x03") {
+							done();
 						}
 						tui.requestRender();
 					},
 				};
 			});
 
-			if (dirty) ctx.ui.notify("pi-mad: saved — restart pi to apply", "info");
+			ctx.ui.notify(`pi-mad: ${enabled.size}/${allSkills.length} enabled — restart pi to apply`, "info");
 		},
 	});
 }

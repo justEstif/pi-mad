@@ -10,25 +10,22 @@ pi install git:github.com/justEstif/pi-mad
 
 Update: `pi update --extensions` (or `pi update --all`).
 
-## Toggling skills
+## Choosing which skills load
 
-This package bundles its own toggle UI — an extension, no extra install step:
+**All pi-mad skills are OFF by default.** The bundled `/pi-mad` command opens a checkbox browser:
 
 ```text
-/pi-mad                  # interactive browser: enter toggles, saved immediately
-/pi-mad list             # show enabled/disabled state
-/pi-mad off <skill...>   # e.g. /pi-mad off prd-coach prfaq-coach
-/pi-mad on <skill...>    # re-enable
-/pi-mad reset            # enable everything
+/pi-mad              # browser: type to search (names AND tags), enter toggles + saves, esc closes
+/pi-mad coach        # same browser, pre-filtered to the coach skills
 ```
 
-State is written as exclusion filters in the package's settings entry (`{ skills: ["!prd-coach"] }`), so it composes with `pi update` and hand edits. Toggles apply on next pi start.
+There are no subcommands — the optional argument is just a search seed. Enabling a skill adds `skills/<name>/**` to the package entry's `skills` allowlist in settings; disabling removes it; an empty list loads none. New skills from package updates stay OFF until you enable them. First run migrates older exclusion-filter setups automatically. Toggles apply on next pi start.
 
 Pi's native `pi config` TUI does the same across all packages (Tab switches global/project scope) if you prefer it.
 
 ## Skills (30)
 
-Every skill carries `metadata.tags` in its frontmatter — first tag is the **kind** (`agent` = facilitated persona session, `workflow` = procedural play, `tool` = utility/generator), second is the **domain** (`planning`, `build`, `review`, `research`, `creative`, `meta`). Filter with `/pi-mad list --tag coach`-style tag args (see Toggling below).
+Every skill carries `metadata.tags` in its frontmatter — first tag is the **kind** (`agent` = facilitated persona session, `workflow` = procedural play, `tool` = utility/generator), second is the **domain** (`planning`, `build`, `review`, `research`, `creative`, `meta`). Search by tag inside `/pi-mad` (e.g. `/pi-mad creative`).
 
 ### Delivery loop & design standards
 | Skill | Origin | What it does |
