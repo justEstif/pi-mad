@@ -25,7 +25,7 @@ For one person: the author. **[A1: audience-of-one.** No default-experience desi
 
 ## Tooling
 
-`bun tools/validate_skills.ts skills/` — deterministic conformance gate (0 findings required). `bun scripts/flag-detag.ts` — re-darken + strip metadata after package updates. `evals/` — model-backed trigger evals (19 probes, `PI_PROVIDER=… PI_MODEL=… npx vitest run evals/trigger.eval.ts`); baseline evals scaffolded but skipped.
+`bun tools/validate_skills.ts skills/` — deterministic conformance gate (0 findings required). `evals/` — model-backed trigger evals (19 probes, `PI_PROVIDER=… PI_MODEL=… npx vitest run evals/trigger.eval.ts`); baseline evals scaffolded but skipped.
 
 ## Assumptions
 
