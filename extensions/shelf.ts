@@ -1,15 +1,11 @@
 /**
  * /pi-shelf — the shelf extension entry.
  *
- * Three jobs:
+ * Two jobs:
  * 1. Darkness enforcement: every skills/<name>/SKILL.md must carry
  *    `disable-model-invocation: true`. `pi update` restores shipped files, so
  *    this repairs the flag at every startup — writing only when something changed.
- * 2. /shelf — browse, search, and load (a command palette; see browser.ts).
- * 3. pi_shelf_search + the input suggester — let the agent answer "does the
- *    shelf have a skill for X?" and quietly offer candidates. Nothing loads
- *    without a human: skills are invoked by name (`/skill:name`), by hand or
- *    via enter in the browser.
+ * 2. pi_shelf_search
  */
 
 import * as fs from "node:fs";
@@ -18,8 +14,6 @@ import { fileURLToPath } from "node:url";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 import { invalidate, listSkills, parseFrontmatter, search } from "./catalog";
-import { openBrowser } from "./browser";
-import { registerInputSuggester } from "./suggest";
 
 const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SKILLS_DIR = path.join(PACKAGE_ROOT, "skills");
@@ -123,31 +117,6 @@ export default function shelfExtension(pi: ExtensionAPI) {
 			);
 		});
 	}
-
-	// Quiet discovery: when the user's message strongly matches shelf skills,
-	// the agent may offer them in one sentence — or say nothing. Never loads.
-	registerInputSuggester(pi, {
-		catalog: () =>
-			listSkills()
-				.filter((s) => !s.disabled)
-				.map((s) => ({ name: s.name, description: s.description })),
-	});
-
-	pi.registerCommand("shelf", {
-		description: "Browse, search, and load pi-shelf skills",
-		getArgumentCompletions: (prefix) =>
-			listSkills()
-				.filter((s) => s.name.startsWith(prefix.trim()))
-				.map((s) => ({ value: s.name, label: s.name })),
-		handler: async (args, ctx) => {
-			await openBrowser(ctx.ui.custom, args, (skill) => {
-				// Enter is the human act: expand /skill:<name> as if typed.
-				pi.sendUserMessage(`/skill:${skill.name}`, {
-					expandPromptTemplates: true,
-				});
-			});
-		},
-	});
 
 	pi.registerTool({
 		name: "pi_shelf_search",

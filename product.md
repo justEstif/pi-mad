@@ -12,7 +12,7 @@ For one person: the author. **[A1: audience-of-one.** No default-experience desi
 
 - **All-dark** — every skill ships `disable-model-invocation: true`; nothing pollutes the system prompt. `/skills` lists them (that's the trigger surface); opt-in is per session, by name (`/skill:name`).
 - **Flag enforcement** — `pi update` restores shipped files, so the extension re-applies the flag at startup. The shelf defends its own darkness.
-- **Discovery** — `pi_shelf_search` tool (agent answers "does the shelf have a skill for X?" without loading), `/shelf` palette (search, enter loads), and a quiet input suggester (strong match → the agent may offer in one sentence, or stay silent; never loads). A typo guard steers "did you mean" on `/skill:` misses.
+- **Discovery** — `pi_shelf_search` tool (agent answers "does the shelf have a skill for X?" without loading). A typo guard steers "did you mean" on `/skill:` misses.
 - **Division of labor** — methodology skills live here; machine wiring (local CLIs, auth, command-policy gates) stays in dotfiles beside its tools.
 
 ## Hard rules
