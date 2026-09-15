@@ -52,7 +52,7 @@ When a skill is invoked non-interactively, the memlog absorbs every assumption m
 - **The implicit-read trap:** language like "review", "acknowledge", or "summarize what you have" causes the parent to read files even when you didn't ask for it. If a later stage delegates document analysis, earlier stages must NOT use that language. Use "note paths for subagent scanning; don't read them now".
 
 ## Length guidance
-Length is measured in tiktoken tokens through `scripts/count_tokens.py` (`cl100k_base`, with a chars/4 fallback when tiktoken is unavailable). There is no line-count gate anywhere. The canon's tests still apply to every line; budgets are a guardrail, not the goal.
+Length is measured in tiktoken tokens through `scripts/count_tokens.py` (`cl100k_base`, with a chars/4 fallback when tiktoken is unavailable). Line count is a secondary readability signal: warn above 150 lines, but never fail on lines alone. The canon's tests still apply to every line; budgets are a guardrail, not the goal.
 
 SKILL.md is tiered against two thresholds from `config.toml`, `skill_md_token_desired` (default 2000) and `skill_md_token_budget` (default 3000). The hard tier sits deliberately under the Agent Skills spec's 5,000-token recommendation, and the budget is a drift guardrail, not the leanness bar — the canon's tests still cut a ceremonial line in a 900-token file:
 

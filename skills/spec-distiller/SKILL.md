@@ -129,31 +129,23 @@ When the user points the skill at an existing spec folder (or its SPEC.md) with 
 
 ## Story Breakdown (optional)
 
-Requires `SPEC.md` on disk — run the normal Operation first if it doesn't exist yet. Offer it at most once per run when the input reads as multiple independently shippable slices; a decline ends the offer for this run, not forever. Also run it on direct request ("break this into stories") whenever `SPEC.md` exists. When a spec update runs and `stories.yaml` exists, check the story descriptions against the updated spec; if any no longer matches, say so and offer to re-run Story Breakdown. The update itself never rewrites `stories.yaml`.
-
-Either way, walk the capabilities and constraints with the user and propose a story per independently reviewable slice — this is a conversation, not a silent render. For each story, ask the user for `spec_checkpoint`, `done_checkpoint`, and any `invoke_dev_with` note rather than defaulting them silently; capturing that human judgment is what the fields are for. If the conversation surfaces load-bearing detail beyond dispatch notes (a constraint, a design decision), route it into SPEC.md or a companion — `invoke_dev_with` carries dispatch notes only (Spec Law rule 7 still applies).
-
-This is the lightweight in-spec slice. When the user wants a full facilitated breakdown — epics organized by user value, Given/When/Then acceptance criteria per story — that is `story-slicer`, which can take this spec as its requirements input.
-
-The output is `stories.yaml`, a sibling of `SPEC.md` inside the spec folder, discovered by that fixed name — same convention as `SPEC.md` and `.memlog.md`. Never list it in `companions:` and never point a frontmatter key at it: companions carry the what-to-build contract every consumer reads; `stories.yaml` is input for whichever tool dispatches the stories.
-
-Field definitions, the validity rules, and a worked example live in `assets/stories-schema.md`. Before writing or re-writing the file, check every entry against those rules; fix violations rather than presenting a file that fails them. Record the check's verdict to `.memlog.md` as an `[event]` entry, the same discipline as Self-Validate.
-
-Derive `stories.yaml` from `.memlog.md` exactly like any other spec-authored artifact: log each proposed story (`[decision]`) as the user agrees to it, then render. On a later run against the same spec folder, re-derive the same way, handling ids per the schema's update semantics.
+When `SPEC.md` exists and the user directly requests stories, or the input contains multiple independently shippable slices, read and follow `references/story-breakdown.md`. Offer it at most once per run.
 
 ## Output
 
-Share the spec folder path conversationally. Name the capability count, the companions produced, and the verdict in one or two sentences. Name the story count too if `stories.yaml` was written this run. If `assumptions[]` or `open_questions[]` are non-empty, list them (short — one line each) and invite the user to walk through them. Make clear that addressing them can update the source input (if it was a file), the spec, or both — whichever combination the user prefers. Do not dump JSON or present a wall of output.
+Share the spec folder path conversationally. Name the capability count, companions, and validation verdict in one or two sentences. If stories were written, name their count. List non-empty assumptions and open questions one line each; do not dump JSON.
 
-## After Spec is Output
+## After output
 
-Any update to the spec — resolved assumptions, answered open questions, other changes — is appended to `.memlog.md` as it happens. When a change overrides something that came from a source input, offer to update that source too, so upstream and the spec don't silently diverge.
+Append later decisions and resolved gaps to `.memlog.md`, then re-derive the spec. Offer to update a source input when a new decision overrides it. Natural next steps are `architecture-spine` or `story-slicer`.
 
-Natural next steps downstream: draft an architecture spine against the spec (`architecture-spine`), or break it into stories (`story-slicer`).
+## Frontmatter
 
-## Frontmatter conventions
+Read `references/frontmatter-conventions.md` before writing or validating SPEC.md frontmatter.
 
-- `companions:` array of `.md` files downstream MUST read alongside SPEC.md to have the full contract. Paths may point inside the spec folder (spec-authored companions like `glossary.md`) or outside it (adopted companions like `../planning-artifacts/ux-designs/ux-foo-bar-2026-05-23/DESIGN.md`). The split between spec-authored and adopted is implicit by path; downstream treats both the same.
-- `sources:` array of paths to files that were **fully absorbed** into the SPEC, with no remaining downstream value (e.g., a PRD whose every load-bearing claim is now in the kernel). Listed for audit and for re-reading on update. Downstream does NOT read these. Files that downstream still needs to read belong in `companions:`, not here.
-- **Do not list** the memlog, README files, organizational artifacts, or any operational record of how upstream flows produced their artifacts. Those are not source content; they are process metadata that downstream consumers don't need.
+## Must NOT
 
+- Hand-edit derived SPEC.md or spec-authored companions.
+- Invent missing requirements, domain answers, or capability success criteria.
+- Renumber or reuse capability IDs.
+- Put operational records or `stories.yaml` in `companions:`.

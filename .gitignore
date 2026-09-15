@@ -1,4 +1,5 @@
 skills/@*
 skills/.DS_Store
 node_modules/
+__pycache__/
 .shelf-disabled
