@@ -3,6 +3,7 @@
 // Usage: bun tools/validate_skills.ts [dirs...]   (default: skills/)
 import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
 import { join, basename, dirname, relative, extname } from "node:path";
+import { getEncoding } from "js-tiktoken";
 
 const rootDirs = process.argv.slice(2).length ? process.argv.slice(2) : ["skills/"];
 const SKIP_DIRS = new Set(["node_modules", ".git"]);
@@ -18,8 +19,14 @@ const TIME_ESTIMATE_PATTERNS = [
 ];
 const COMPILE_TIME_SUB_REGEX = /\{\{-?\s*(?:config|workflow)\.[^}]*\}\}/;
 const INSTALLED_PATH_RE = /installed_path/i;
+const SKILL_MD_TOKEN_WARNING = 2_000;
+const SKILL_MD_TOKEN_MAX = 3_000;
+const SKILL_MD_LINE_WARNING = 150;
+const encoder = getEncoding("cl100k_base");
 
-const findings: { rule: string; path: string; message: string }[] = [];
+type Finding = { rule: string; path: string; message: string };
+const findings: Finding[] = [];
+const warnings: Finding[] = [];
 
 function walk(dir: string, fn: (p: string) => void, top = true): void {
   let entries: string[];
@@ -116,6 +123,10 @@ function add(rule: string, path: string, message: string) {
   findings.push({ rule, path, message });
 }
 
+function warn(rule: string, path: string, message: string) {
+  warnings.push({ rule, path, message });
+}
+
 for (const dir of discoverSkillDirs()) {
   const dirName = basename(dir);
   const skillMd = join(dir, "SKILL.md");
@@ -129,6 +140,17 @@ for (const dir of discoverSkillDirs()) {
   }
 
   const content = readFileSync(skillMd, "utf8");
+  const tokenCount = encoder.encode(content).length;
+  const lineCount = content.split("\n").length - (content.endsWith("\n") ? 1 : 0);
+  if (tokenCount > SKILL_MD_TOKEN_MAX) {
+    add("SIZE-01", skillMd, `${tokenCount} tokens exceeds the ${SKILL_MD_TOKEN_MAX}-token maximum.`);
+  } else if (tokenCount > SKILL_MD_TOKEN_WARNING) {
+    warn("SIZE-01", skillMd, `${tokenCount} tokens exceeds the ${SKILL_MD_TOKEN_WARNING}-token target.`);
+  }
+  if (lineCount > SKILL_MD_LINE_WARNING) {
+    warn("SIZE-02", skillMd, `${lineCount} lines exceeds the ${SKILL_MD_LINE_WARNING}-line readability target.`);
+  }
+
   const fm = parseFrontmatter(content);
 
   if (!fm || !("name" in fm)) {
@@ -207,8 +229,11 @@ for (const dir of discoverSkillDirs()) {
 }
 
 const cwd = process.cwd();
+for (const w of warnings) {
+  console.log(`WARN ${w.rule} ${relative(cwd, w.path) || w.path}: ${w.message}`);
+}
 for (const f of findings) {
   console.log(`${f.rule} ${relative(cwd, f.path) || f.path}: ${f.message}`);
 }
-console.log(`\n${findings.length} finding(s) across ${rootDirs.join(", ")}`);
+console.log(`\n${findings.length} finding(s), ${warnings.length} warning(s) across ${rootDirs.join(", ")}`);
 process.exit(findings.length > 0 ? 1 : 0);

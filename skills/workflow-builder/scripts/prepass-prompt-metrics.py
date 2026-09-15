@@ -202,7 +202,7 @@ def scan(skill_path: Path) -> dict:
         "skill_path": str(skill_path),
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "budgets": {
-            "skill_md_tokens": [1500, 2500],
+            "skill_md_tokens": [2000, 3000],
             "multi_branch_reference_tokens": 4500,
             "single_purpose_reference_tokens": 9000,
         },
